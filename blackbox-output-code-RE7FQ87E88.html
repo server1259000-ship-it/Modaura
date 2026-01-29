@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modaura - Chic dresses for girls. Discover trendy, affordable fashion for ages 4-16.">
+    <title>Modaura - Girls' Fashion Dresses</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f8f8; color: #333; }
+        header { background-color: #ff69b4; color: white; text-align: center; padding: 20px; }
+        nav { background-color: #ffb6c1; padding: 10px; text-align: center; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .product { background: white; border: 1px solid #ddd; padding: 15px; text-align: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .product img { max-width: 100%; height: 200px; object-fit: cover; border-radius: 5px; }
+        .product button { background-color: #ff69b4; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 5px; }
+        .product button:hover { background-color: #ffb6c1; }
+        .add-form { background: white; border: 1px solid #ddd; padding: 20px; margin-top: 20px; border-radius: 8px; }
+        .add-form input, .add-form textarea { width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .add-form button { background-color: #ff69b4; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
+        .add-form button:hover { background-color: #ffb6c1; }
+        footer { background-color: #ff69b4; color: white; text-align: center; padding: 10px; margin-top: 20px; }
+        section { margin-bottom: 40px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Modaura</h1>
+        <p>Chic Dresses for Girls - Discover the Latest Trends</p>
+    </header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#shop">Shop Dresses</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div class="container">
+        <section id="home">
+            <h2>Welcome to Modaura</h2>
+            <p>Explore our collection of adorable dresses for girls. From casual to party wear, find the perfect outfit!</p>
+        </section>
+        
+        <section id="shop">
+            <h2>Featured Dresses</h2>
+            <div class="product-grid">
+                <div class="product">
+                    <img src="https://via.placeholder.com/250x200?text=Floral+Dress" alt="Floral Dress">
+                    <h3>Floral Summer Dress</h3>
+                    <p>Perfect for ages 6-10. $25</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/250x200?text=Party+Dress" alt="Party Dress">
+                    <h3>Party Princess Dress</h3>
+                    <p>Sparkly for ages 4-8. $30</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/250x200?text=Casual+Dress" alt="Casual Dress">
+                    <h3>Casual Denim Dress</h3>
+                    <p>Comfortable for ages 8-12. $20</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/250x200?text=Winter+Dress" alt="Winter Dress">
+                    <h3>Cozy Winter Dress</h3>
+                    <p>Warm and stylish for ages 5-9. $35</p>
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+            
+            <div class="add-form">
+                <h3>Add a New Dress</h3>
+                <form id="addDressForm">
+                    <input type="text" id="dressName" placeholder="Dress Name" required>
+                    <input type="text" id="dressDesc" placeholder="Description (e.g., Ages 6-10, $25)" required>
+                    <input type="url" id="dressImage" placeholder="Image URL" required>
+                    <button type="submit">Post Dress</button>
+                </form>
+            </div>
+        </section>
+        
+        <section id="about">
+            <h2>About Modaura</h2>
+            <p>Modaura is dedicated to providing high-quality, affordable fashion for girls. We focus on trendy, comfortable dresses that make every girl feel special.</p>
+        </section>
+        
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <p>Email: info@modaurafashion.com | Phone: (123) 456-7890</p>
+            <form>
+                <input type="text" placeholder="Your Name" required><br>
+                <input type="email" placeholder="Your Email" required><br>
+                <textarea placeholder="Message"></textarea><br>
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2023 Modaura. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        document.getElementById('addDressForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('dressName').value;
+            const desc = document.getElementById('dressDesc').value;
+            const img = document.getElementById('dressImage').value;
+            
+            const productGrid = document.querySelector('.product-grid');
+            const newProduct = document.createElement('div');
+            newProduct.className = 'product';
+            newProduct.innerHTML = `
+                <img src="${img}" alt="${name}">
+                <h3>${name}</h3>
+                <p>${desc}</p>
+                <button>Add to Cart</button>
+            `;
+            productGrid.appendChild(newProduct);
+            
+            document.getElementById('addDressForm').reset();
+            alert('Dress added successfully!');
+        });
+    </script>
+</body>
+</html>
