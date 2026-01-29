@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modaura Admin</title>
+    <style>
+        body { font-family: sans-serif; background: #fff0f5; text-align: center; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: inline-block; width: 100%; max-width: 350px; }
+        h1 { color: #ff69b4; margin-bottom: 10px; }
+        input, textarea { width: 90%; margin: 10px 0; padding: 12px; border: 2px solid #ffb6c1; border-radius: 10px; }
+        button { background: #ff69b4; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; width: 95%; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>MODAURA</h1>
+        <p>Save dress to Neon Database</p>
+        <form id="dressForm">
+            <input type="text" id="name" placeholder="Dress Name" required>
+            <textarea id="desc" placeholder="Description" rows="3"></textarea>
+            <input type="text" id="url" placeholder="Image URL" required>
+            <button type="submit">Upload Dress</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('dressForm').onsubmit = (e) => {
+            e.preventDefault();
+            alert("Success! Code is on GitHub. Now let's go to Vercel.");
+        };
+    </script>
+</body>
+</html>
