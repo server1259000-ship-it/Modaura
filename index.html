@@ -1,32 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modaura Admin</title>
     <style>
-        body { font-family: sans-serif; background: #fff0f5; text-align: center; padding: 20px; }
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: inline-block; width: 100%; max-width: 350px; }
-        h1 { color: #ff69b4; margin-bottom: 10px; }
-        input, textarea { width: 90%; margin: 10px 0; padding: 12px; border: 2px solid #ffb6c1; border-radius: 10px; }
-        button { background: #ff69b4; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; width: 95%; }
+        body { font-family: sans-serif; background: #fff5f8; text-align: center; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: inline-block; width: 90%; max-width: 350px; }
+        input, textarea { width: 95%; margin: 10px 0; padding: 12px; border: 2px solid #ffb6c1; border-radius: 10px; box-sizing: border-box; }
+        button { background: #ff69b4; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>MODAURA</h1>
+        <h1 style="color: #ff69b4;">MODAURA</h1>
         <p>Save dress to Neon Database</p>
         <form id="dressForm">
             <input type="text" id="name" placeholder="Dress Name" required>
             <textarea id="desc" placeholder="Description" rows="3"></textarea>
             <input type="text" id="url" placeholder="Image URL" required>
-            <button type="submit">Upload Dress</button>
+            <button type="submit" id="btn">Upload Dress</button>
         </form>
     </div>
     <script>
-        document.getElementById('dressForm').onsubmit = (e) => {
+        document.getElementById('dressForm').onsubmit = async (e) => {
             e.preventDefault();
-            alert("Success! Code is on GitHub. Now let's go to Vercel.");
+            const btn = document.getElementById('btn');
+            btn.innerText = "Saving...";
+            
+            const data = {
+                name: document.getElementById('name').value,
+                desc: document.getElementById('desc').value,
+                url: document.getElementById('url').value
+            };
+
+            try {
+                const res = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    alert("Mubarak ho! Data Neon mein save ho gaya.");
+                    document.getElementById('dressForm').reset();
+                } else {
+                    alert("Error: Data save nahi hua.");
+                }
+            } catch (err) {
+                alert("Connection Fail!");
+            } finally {
+                btn.innerText = "Upload Dress";
+            }
         };
     </script>
 </body>
