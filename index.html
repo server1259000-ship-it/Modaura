@@ -2,91 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODAURA | Luxury Boutique</title>
+    <title>MODAURA | Global Luxury Boutique</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap');
-        body { font-family: 'Poppins', sans-serif; background-color: #0a0a0a; color: white; margin: 0; }
+        body { font-family: 'Poppins', sans-serif; background-color: #050505; color: white; scroll-behavior: smooth; }
         .serif { font-family: 'Playfair Display', serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .gold-text { background: linear-gradient(135deg, #d4af37 0%, #f9f295 50%, #ab8e28 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .buy-btn { background: linear-gradient(90deg, #d4af37, #ab8e28); color: black; font-weight: bold; transition: 0.3s; }
-        .buy-btn:hover { box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); transform: scale(1.02); }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .buy-btn { background: linear-gradient(90deg, #d4af37, #ab8e28); transition: 0.4s; color: black; }
+        .buy-btn:hover { box-shadow: 0 0 25px rgba(212, 175, 55, 0.6); transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
-<nav class="glass fixed w-full z-50 px-8 py-4 flex justify-between items-center">
-    <div class="serif text-2xl font-bold tracking-tighter gold-text">MODAURA</div>
-    <div class="text-[10px] uppercase tracking-[0.4em] text-gray-500">Premium Collection 2026</div>
+<nav class="glass fixed w-full z-[100] px-6 py-4 flex justify-between items-center">
+    <div class="serif text-3xl font-bold gold-text tracking-tighter">MODAURA</div>
+    <div class="hidden md:flex space-x-8 text-[10px] tracking-[0.3em] uppercase text-gray-400">
+        <a href="#home" class="hover:text-white transition">Home</a>
+        <a href="#collection" class="hover:text-white transition">Collection</a>
+        <a href="#admin" class="hover:text-white transition">Manage</a>
+    </div>
 </nav>
 
-<section class="pt-28 pb-10 px-4">
-    <div class="glass max-w-xl mx-auto p-8 rounded-3xl">
-        <h2 class="serif text-2xl mb-6 text-center gold-text text-white">Boutique Management</h2>
-        <form id="dressForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" id="name" placeholder="Dress Name" class="bg-black/40 border border-white/10 p-3 rounded-xl outline-none text-sm focus:border-yellow-600" required>
-            <input type="text" id="price" placeholder="Price (e.g. $115.99)" class="bg-black/40 border border-white/10 p-3 rounded-xl outline-none text-sm" required>
-            <input type="text" id="url" placeholder="Image URL (.jpg)" class="md:col-span-2 bg-black/40 border border-white/10 p-3 rounded-xl outline-none text-sm" required>
-            <input type="text" id="affLink" placeholder="Amazon Affiliate Link" class="md:col-span-2 bg-black/40 border border-white/10 p-3 rounded-xl outline-none text-sm" required>
-            <textarea id="desc" placeholder="Luxury Description" class="md:col-span-2 bg-black/40 border border-white/10 p-3 rounded-xl outline-none text-sm" rows="2"></textarea>
-            <button type="submit" id="btn" class="md:col-span-2 bg-white text-black font-bold py-4 rounded-xl hover:bg-yellow-500 transition tracking-widest text-xs uppercase">Add to Collection</button>
+<section id="home" class="h-screen flex items-center justify-center text-center relative overflow-hidden">
+    <div class="z-10 px-4">
+        <h2 class="text-xs tracking-[0.6em] uppercase text-yellow-600 mb-4 animate-pulse">New York • Paris • Milan</h2>
+        <h1 class="serif text-6xl md:text-8xl mb-6">Masterpieces of <br><span class="gold-text">Elegance</span></h1>
+        <a href="#collection" class="inline-block border border-yellow-600/50 px-12 py-4 text-[10px] tracking-[0.4em] uppercase hover:bg-yellow-600 hover:text-black transition duration-500">View Catalog</a>
+    </div>
+</section>
+
+<div class="max-w-7xl mx-auto px-6 mb-12 flex flex-col md:flex-row gap-4">
+    <input type="text" id="searchInput" onkeyup="filterDresses()" placeholder="Search by name..." class="glass flex-1 p-4 rounded-xl outline-none border border-white/10 focus:border-yellow-600/50">
+    <select id="categoryFilter" onchange="filterDresses()" class="glass p-4 rounded-xl outline-none border border-white/10 text-gray-400">
+        <option value="">All Categories</option>
+        <option value="Gala">Gala Gowns</option>
+        <option value="Bridal">Bridal</option>
+        <option value="Evening">Evening Wear</option>
+    </select>
+</div>
+
+<section id="collection" class="py-10 px-6 max-w-7xl mx-auto min-h-[400px]">
+    <div id="gallery" class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        </div>
+</section>
+
+<section id="admin" class="py-20 px-6 bg-[#080808]">
+    <div class="glass max-w-2xl mx-auto p-10 rounded-3xl border-yellow-900/20">
+        <h2 class="serif text-3xl mb-8 text-center gold-text">Inventory Management</h2>
+        <form id="dressForm" class="grid grid-cols-2 gap-4">
+            <input type="text" id="name" placeholder="Dress Name" class="col-span-2 bg-black/50 border border-white/5 p-4 rounded-xl outline-none" required>
+            <input type="text" id="price" placeholder="Price ($)" class="bg-black/50 border border-white/5 p-4 rounded-xl outline-none" required>
+            <select id="category" class="bg-black/50 border border-white/5 p-4 rounded-xl outline-none text-gray-400">
+                <option value="Gala">Gala Gown</option>
+                <option value="Bridal">Bridal</option>
+                <option value="Evening">Evening Wear</option>
+            </select>
+            <input type="text" id="url" placeholder="Direct Image URL" class="col-span-2 bg-black/50 border border-white/5 p-4 rounded-xl outline-none" required>
+            <input type="text" id="affLink" placeholder="Amazon Affiliate Link" class="col-span-2 bg-black/50 border border-white/5 p-4 rounded-xl outline-none" required>
+            <textarea id="desc" placeholder="Product Story..." class="col-span-2 bg-black/50 border border-white/5 p-4 rounded-xl outline-none" rows="3"></textarea>
+            <button type="submit" id="btn" class="col-span-2 buy-btn py-5 rounded-xl font-bold uppercase tracking-widest text-xs">Publish to Boutique</button>
         </form>
     </div>
 </section>
 
-<section class="py-16 px-6 max-w-7xl mx-auto">
-    <h3 class="serif text-4xl mb-12 text-center tracking-tight">The <span class="gold-text italic">Curated</span> Gowns</h3>
-    <div id="gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        </div>
-</section>
+<footer class="py-20 text-center border-t border-white/5">
+    <div class="serif text-2xl gold-text mb-4 font-bold">MODAURA</div>
+    <p class="text-gray-600 text-[10px] tracking-[0.5em] uppercase">Excellence in Every Stitch</p>
+</footer>
 
 <script>
-    // 1. Save Data
+    let allDresses = [];
+
+    async function loadDresses() {
+        const res = await fetch('/api/get-dresses');
+        allDresses = await res.json();
+        renderDresses(allDresses);
+    }
+
+    function renderDresses(data) {
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = data.map(d => `
+            <div class="glass group rounded-2xl overflow-hidden border border-white/5 hover:border-yellow-600/30 transition-all duration-700">
+                <div class="relative overflow-hidden">
+                    <img src="${d.url}" class="w-full h-[500px] object-cover transition duration-1000 group-hover:scale-110">
+                    <div class="absolute top-6 left-6 bg-black/80 px-4 py-1 rounded-full text-[10px] tracking-widest uppercase text-yellow-500 border border-yellow-500/20">${d.category || 'Luxury'}</div>
+                </div>
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="serif text-xl tracking-tight uppercase">${d.name}</h3>
+                        <span class="gold-text font-bold">${d.price || '$0'}</span>
+                    </div>
+                    <p class="text-gray-500 text-[10px] leading-relaxed mb-8 uppercase tracking-[0.1em] font-light">${d.desc}</p>
+                    <a href="${d.affiliate_link || '#'}" target="_blank" class="buy-btn block w-full text-center py-4 rounded-lg text-[10px] font-bold tracking-[0.3em] uppercase">Buy via Amazon</a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterDresses() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const categoryTerm = document.getElementById('categoryFilter').value;
+        const filtered = allDresses.filter(d => {
+            const matchesSearch = d.name.toLowerCase().includes(searchTerm);
+            const matchesCategory = categoryTerm === "" || d.category === categoryTerm;
+            return matchesSearch && matchesCategory;
+        });
+        renderDresses(filtered);
+    }
+
     document.getElementById('dressForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btn');
-        btn.innerText = "UPDATING BOUTIQUE...";
+        btn.innerText = "PUBLISHING...";
         const data = {
             name: document.getElementById('name').value,
             desc: document.getElementById('desc').value,
             url: document.getElementById('url').value,
             price: document.getElementById('price').value,
-            affiliate_link: document.getElementById('affLink').value
+            affiliate_link: document.getElementById('affLink').value,
+            category: document.getElementById('category').value
         };
-        const res = await fetch('/api/save', {
+        await fetch('/api/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-        if (res.ok) { alert("Luxury item added successfully!"); location.reload(); }
-        btn.innerText = "Add to Collection";
+        location.reload();
     };
 
-    // 2. Load Data
-    async function loadDresses() {
-        const res = await fetch('/api/get-dresses');
-        const dresses = await res.json();
-        const gallery = document.getElementById('gallery');
-        gallery.innerHTML = dresses.map(d => `
-            <div class="glass group rounded-2xl overflow-hidden transition-all duration-500 hover:border-yellow-600/50">
-                <div class="relative overflow-hidden">
-                    <img src="${d.url}" class="w-full h-[450px] object-cover transition duration-700 group-hover:scale-110">
-                    <div class="absolute top-4 right-4 bg-black/70 px-3 py-1 rounded-full text-xs font-bold text-yellow-500 border border-yellow-500/30">
-                        ${d.price || '$115.00'}
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h4 class="serif text-xl mb-1 uppercase tracking-tighter">${d.name}</h4>
-                    <p class="text-gray-500 text-[11px] mb-6 font-light uppercase tracking-widest leading-relaxed">${d.desc}</p>
-                    <a href="${d.affiliate_link || '#'}" target="_blank" class="buy-btn block w-full text-center py-4 rounded-lg text-[10px] tracking-[0.2em] uppercase font-bold">
-                        Acquire on Amazon
-                    </a>
-                </div>
-            </div>
-        `).join('');
-    }
     loadDresses();
 </script>
 </body>
-</html>
+                </html>
+    
