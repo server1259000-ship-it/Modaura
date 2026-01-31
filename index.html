@@ -67,13 +67,11 @@
                 </div>
             `).join('');
         }
-
-        document.getElementById('dressForm').onsubmit = async (e) => {
+    document.getElementById('dressForm').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn');
             btn.innerText = "PUBLISHING...";
-            
-            const data = {
+             const data = {
                 name: document.getElementById('name').value,
                 desc: document.getElementById('desc').value,
                 url: document.getElementById('url').value,
@@ -81,8 +79,7 @@
                 affiliate_link: document.getElementById('affLink').value,
                 category: document.getElementById('category').value
             };
-
-            await fetch('/api/save', {
+         await fetch('/api/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -92,8 +89,7 @@
             document.getElementById('dressForm').reset();
             loadDresses();
         };
-
-        loadDresses();
+    loadDresses();
     </script>
 </body>
             </html>
