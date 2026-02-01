@@ -1,11 +1,11 @@
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req, res) {
+  const sql = neon(process.env.DATABASE_URL);
   try {
-    // Ye line database se data nikaalti hai
-    const { rows } = await sql`SELECT * FROM dresses ORDER BY id DESC;`;
-    return res.status(200).json(rows);
+    const posts = await sql('SELECT * FROM dresses ORDER BY id DESC');
+    res.status(200).json(posts);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 }
