@@ -3,94 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODAURA | Luxury Boutique</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Modaura | Luxury Pink Boutique</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        .serif { font-family: 'Cinzel', serif; }
-        body { font-family: 'Jost', sans-serif; background-color: #050505; color: white; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); }
-        .gold-text { background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .buy-btn { background: linear-gradient(45deg, #bf953f, #aa771c); color: black; transition: all 0.3s; }
-        .buy-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(191, 149, 63, 0.3); }
+        :root {
+            --bg-color: #ffffff;
+            --soft-pink: #fffafa;
+            --premium-pink: #ffdae0;
+            --deep-pink: #e8a7b0;
+            --gold-text: #8e6d45;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(to bottom, #fff5f6, #ffffff);
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin: 0;
+            color: var(--deep-pink);
+            letter-spacing: 8px;
+            font-weight: 400;
+        }
+
+        header p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--gold-text);
+            margin-top: 10px;
+        }
+
+        /* Solid Admin Panel (No Glass Effect) */
+        .admin-panel {
+            max-width: 550px;
+            margin: -40px auto 60px;
+            padding: 40px;
+            background: #ffffff; /* Pure Solid White */
+            border-radius: 20px;
+            border: 1px solid var(--premium-pink);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Clean Shadow */
+        }
+
+        .admin-panel h3 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            color: var(--deep-pink);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #f0f0f0;
+            background: #fdf8f9;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--deep-pink);
+            background: #fff;
+        }
+
+        .publish-btn {
+            background: #2c2c2c;
+            color: #fff;
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.4s;
+        }
+
+        .publish-btn:hover {
+            background: var(--deep-pink);
+        }
+
+        /* Pinterest Grid Layout */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
+        /* Product Card */
+        .card {
+            background: #fff;
+            border-radius: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            position: relative;
+            border: 1px solid #f9f9f9;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(232, 167, 176, 0.2);
+        }
+
+        .image-box {
+            width: 100%;
+            height: 420px;
+            overflow: hidden;
+            background: #fdfdfd;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.8s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-info {
+            padding: 25px 15px;
+            text-align: center;
+        }
+
+        .card-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 0 0 10px 0;
+            font-weight: 400;
+        }
+
+        .price {
+            font-size: 1.1rem;
+            color: var(--gold-text);
+            margin-bottom: 15px;
+        }
+
+        .buy-link {
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: #333;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+            transition: 0.3s;
+        }
+
+        .buy-link:hover {
+            color: var(--deep-pink);
+            border-color: var(--deep-pink);
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.5rem; }
+            .container { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .image-box { height: 260px; }
+            .admin-panel { margin: 20px; padding: 25px; }
+        }
     </style>
 </head>
 <body>
-    <header class="py-10 text-center border-b border-white/5">
-        <h1 class="serif text-5xl tracking-[0.3em] gold-text mb-2">MODAURA</h1>
-        <p class="text-xs tracking-[0.5em] uppercase text-gray-500">The International Gala Collection</p>
-    </header>
 
-    <section class="max-w-2xl mx-auto my-16 p-8 glass rounded-3xl border border-white/10">
-        <h2 class="serif text-2xl mb-8 text-center gold-text">Inventory Management</h2>
-        <form id="dressForm" class="space-y-4">
-            <input type="text" id="name" placeholder="Dress Name" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-yellow-600" required>
-            <div class="grid grid-cols-2 gap-4">
-                <input type="text" id="price" placeholder="Price (e.g. 199.99)" class="bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-yellow-600">
-                <select id="category" class="bg-black border border-white/10 p-4 rounded-xl outline-none focus:border-yellow-600">
-                    <option value="Gala Gown">Gala Gown</option>
-                    <option value="Cocktail">Cocktail</option>
-                    <option value="Bridal">Bridal</option>
-                </select>
-            </div>
-            <input type="url" id="url" placeholder="Direct Image URL" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-yellow-600" required>
-            <input type="url" id="affLink" placeholder="Amazon Affiliate Link" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-yellow-600">
-            <textarea id="desc" placeholder="Product Story" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-yellow-600 h-32"></textarea>
-            <button type="submit" id="btn" class="buy-btn w-full py-4 rounded-xl font-bold uppercase tracking-widest">Publish to Boutique</button>
-        </form>
-    </section>
+<header>
+    <h1>MODAURA</h1>
+    <p>Collection de Luxe</p>
+</header>
 
-    <section class="max-w-7xl mx-auto px-6 mb-24">
-        <h2 class="serif text-3xl mb-12 text-center tracking-widest uppercase">Masterpieces of Elegance</h2>
-        <div id="gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            </div>
-    </section>
+<div class="admin-panel">
+    <h3>Inventory Suite</h3>
+    <input type="text" id="name" placeholder="Ensemble Name">
+    <input type="text" id="price" placeholder="Valuation (e.g. $250)">
+    <input type="text" id="image_url" placeholder="Direct Image URL">
+    <input type="text" id="affiliate_link" placeholder="Amazon Affiliate Link">
+    <textarea id="description" rows="2" placeholder="Describe the elegance..."></textarea>
+    <button class="publish-btn" onclick="saveDress()">ADD TO BOUTIQUE</button>
+</div>
 
-    <script>
-        async function loadDresses() {
+<div class="container" id="grid"></div>
+
+<script>
+    async function loadDresses() {
+        try {
             const res = await fetch('/api/get-dresses');
             const data = await res.json();
-            const gallery = document.getElementById('gallery');
-            gallery.innerHTML = data.map(d => `
-                <div class="glass group rounded-2xl overflow-hidden border border-white/5 hover:border-yellow-600/30 transition-all duration-500">
-                    <div class="relative overflow-hidden h-[450px]">
-                        <img src="${d.url}" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
-                        <div class="absolute top-4 right-4 bg-black/80 px-4 py-2 rounded-full border border-yellow-600/50">
-                            <span class="gold-text font-bold">$${d.price || '0.00'}</span>
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+
+            data.forEach((item, i) => {
+                grid.innerHTML += `
+                    <div class="card" style="animation: fadeIn 0.8s ease forwards ${i * 0.1}s; opacity:0;">
+                        <a href="${item.affiliate_link}" target="_blank">
+                            <div class="image-box">
+                                <img src="${item.image_url}" alt="${item.name}">
+                            </div>
+                        </a>
+                        <div class="card-info">
+                            <h3>${item.name}</h3>
+                            <div class="price">${item.price}</div>
+                            <a href="${item.affiliate_link}" target="_blank" class="buy-link">VIEW ON AMAZON</a>
                         </div>
                     </div>
-                    <div class="p-8 text-center">
-                        <h3 class="serif text-xl mb-2 text-white">${d.name}</h3>
-                        <p class="text-gray-500 text-sm mb-6 line-clamp-2">${d.description}</p>
-                        <a href="${d.affiliate_link}" target="_blank" class="buy-btn block w-full py-4 rounded-xl font-bold uppercase tracking-widest text-[10px]">Buy via Amazon</a>
-                    </div>
-                </div>
-            `).join('');
-        }
-    document.getElementById('dressForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn');
-            btn.innerText = "PUBLISHING...";
-             const data = {
-                name: document.getElementById('name').value,
-                desc: document.getElementById('desc').value,
-                url: document.getElementById('url').value,
-                price: document.getElementById('price').value,
-                affiliate_link: document.getElementById('affLink').value,
-                category: document.getElementById('category').value
-            };
-         await fetch('/api/save', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                `;
             });
+        } catch (e) { console.error("Error loading dresses"); }
+    }
 
-            btn.innerText = "PUBLISH TO BOUTIQUE";
-            document.getElementById('dressForm').reset();
-            loadDresses();
+    async function saveDress() {
+        const btn = document.querySelector('.publish-btn');
+        btn.innerText = "Saving...";
+        const payload = {
+            name: document.getElementById('name').value,
+            price: document.getElementById('price').value,
+            image_url: document.getElementById('image_url').value,
+            affiliate_link: document.getElementById('affiliate_link').value,
+            description: document.getElementById('description').value
         };
+
+        const res = await fetch('/api/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (res.ok) { location.reload(); }
+        else { alert("Error saving dress!"); btn.innerText = "ADD TO BOUTIQUE"; }
+    }
+
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }`;
+    document.head.appendChild(style);
+
     loadDresses();
-    </script>
+</script>
+
 </body>
-            </html>
-            
+    </html>
