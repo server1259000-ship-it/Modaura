@@ -1,16 +1,25 @@
-import { neon } from '@neondatabase/serverless';
+import { Redis } from '@upstash/redis'
+
+const redis = Redis.fromEnv()
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const sql = neon(process.env.DATABASE_URL);
-    const { name, desc, url, price, affiliate_link, category } = req.body;
-    
     try {
-      await sql('INSERT INTO dresses (name, description, url, price, affiliate_link, category) VALUES ($1, $2, $3, $4, $5, $6)', 
-      [name, desc, url, price, affiliate_link, category]);
-      res.status(200).json({ message: 'Success' });
+      const dress = req.body;
+      const currentData = await redis.get('dresses');
+      let dresses = [];
+      
+      if (currentData) {
+        dresses = typeof currentData === 'string' ? JSON.parse(currentData) : currentData;
+      }
+      
+      dresses.push(dress);
+      await redis.set('dresses', JSON.stringify(dresses));
+      
+      return res.status(200).json({ success: true });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: error.message });
     }
   }
+  return res.status(405).json({ message: 'Method not allowed' });
 }
