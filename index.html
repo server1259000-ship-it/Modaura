@@ -3,261 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modaura | Luxury Pink Boutique</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Modaura | New York Boutique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #ffffff;
-            --soft-pink: #fffafa;
-            --premium-pink: #ffdae0;
-            --deep-pink: #e8a7b0;
-            --gold-text: #8e6d45;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            color: #2c2c2c;
-            line-height: 1.6;
-        }
-
-        /* Hero Section */
-        header {
-            text-align: center;
-            padding: 80px 20px;
-            background: linear-gradient(to bottom, #fff5f6, #ffffff);
-        }
-
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            margin: 0;
-            color: var(--deep-pink);
-            letter-spacing: 8px;
-            font-weight: 400;
-        }
-
-        header p {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            color: var(--gold-text);
-            margin-top: 10px;
-        }
-
-        /* Solid Admin Panel (No Glass Effect) */
-        .admin-panel {
-            max-width: 550px;
-            margin: -40px auto 60px;
-            padding: 40px;
-            background: #ffffff; /* Pure Solid White */
-            border-radius: 20px;
-            border: 1px solid var(--premium-pink);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Clean Shadow */
-        }
-
-        .admin-panel h3 {
-            font-family: 'Playfair Display', serif;
-            text-align: center;
-            color: var(--deep-pink);
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 1px solid #f0f0f0;
-            background: #fdf8f9;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            box-sizing: border-box;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--deep-pink);
-            background: #fff;
-        }
-
-        .publish-btn {
-            background: #2c2c2c;
-            color: #fff;
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.4s;
-        }
-
-        .publish-btn:hover {
-            background: var(--deep-pink);
-        }
-
-        /* Pinterest Grid Layout */
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 40px;
-            padding: 20px;
-        }
-
-        /* Product Card */
-        .card {
-            background: #fff;
-            border-radius: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            position: relative;
-            border: 1px solid #f9f9f9;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(232, 167, 176, 0.2);
-        }
-
-        .image-box {
-            width: 100%;
-            height: 420px;
-            overflow: hidden;
-            background: #fdfdfd;
-        }
-
-        .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: transform 0.8s ease;
-        }
-
-        .card:hover img {
-            transform: scale(1.05);
-        }
-
-        .card-info {
-            padding: 25px 15px;
-            text-align: center;
-        }
-
-        .card-info h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            margin: 0 0 10px 0;
-            font-weight: 400;
-        }
-
-        .price {
-            font-size: 1.1rem;
-            color: var(--gold-text);
-            margin-bottom: 15px;
-        }
-
-        .buy-link {
-            text-decoration: none;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            color: #333;
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
-            transition: 0.3s;
-        }
-
-        .buy-link:hover {
-            color: var(--deep-pink);
-            border-color: var(--deep-pink);
-        }
-
-        @media (max-width: 600px) {
-            header h1 { font-size: 2.5rem; }
-            .container { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .image-box { height: 260px; }
-            .admin-panel { margin: 20px; padding: 25px; }
-        }
+        body { font-family: 'Poppins', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .admin-only { display: none; }
     </style>
 </head>
-<body>
+<body class="bg-[#fafafa]">
 
-<header>
-    <h1>MODAURA</h1>
-    <p>Collection de Luxe</p>
-</header>
+    <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm p-4 px-8 flex justify-between items-center border-b border-gray-100">
+        <h1 class="text-3xl font-serif tracking-[0.2em] text-black">MODAURA</h1>
+        <div class="flex items-center gap-4">
+            <button id="adminBtn" onclick="toggleAdmin()" class="text-[10px] uppercase tracking-widest text-gray-400 hover:text-black transition">Staff Login</button>
+            <button id="logoutBtn" onclick="logout()" class="hidden text-red-500 text-xs uppercase tracking-widest font-bold">Logout</button>
+        </div>
+    </nav>
 
-<div class="admin-panel">
-    <h3>Inventory Suite</h3>
-    <input type="text" id="name" placeholder="Ensemble Name">
-    <input type="text" id="price" placeholder="Valuation (e.g. $250)">
-    <input type="text" id="image_url" placeholder="Direct Image URL">
-    <input type="text" id="affiliate_link" placeholder="Amazon Affiliate Link">
-    <textarea id="description" rows="2" placeholder="Describe the elegance..."></textarea>
-    <button class="publish-btn" onclick="saveDress()">ADD TO BOUTIQUE</button>
-</div>
+    <div id="adminPanel" class="admin-only max-w-2xl mx-auto mt-8 p-8 bg-white rounded-none shadow-2xl border-t-4 border-black">
+        <h2 class="text-xl font-serif mb-6 text-gray-800 uppercase tracking-widest">Inventory Management</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="text" id="dressName" placeholder="Product Name (e.g. Silk Evening Gown)" class="w-full p-3 border-b border-gray-200 focus:border-black outline-none transition">
+            <input type="number" id="dressPrice" placeholder="Price in USD ($)" class="w-full p-3 border-b border-gray-200 focus:border-black outline-none transition">
+            <input type="text" id="dressImage" placeholder="Image URL (High Quality Link)" class="w-full p-3 border-b border-gray-200 focus:border-black outline-none md:col-span-2">
+            <button onclick="saveDress()" class="md:col-span-2 bg-black text-white p-4 uppercase tracking-[0.2em] text-sm hover:bg-gray-800 transition transform active:scale-95">Upload Collection</button>
+        </div>
+    </div>
 
-<div class="container" id="grid"></div>
+    <header class="text-center py-16">
+        <p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">New York • Paris • Milan</p>
+        <h2 class="text-5xl font-serif text-black mb-4 italic">The Winter Collection</h2>
+        <div class="w-12 h-[1px] bg-black mx-auto"></div>
+    </header>
 
-<script>
-    async function loadDresses() {
-        try {
+    <main class="max-w-7xl mx-auto px-6 pb-24">
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+            <p class="text-center col-span-full text-gray-400 font-light tracking-widest">CURATING COLLECTION...</p>
+        </div>
+    </main>
+
+    <script>
+        const PASS = "rafay1259";
+        let isAdmin = false;
+
+        function toggleAdmin() {
+            const entry = prompt("Enter Access Key:");
+            if (entry === PASS) {
+                isAdmin = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminBtn').classList.add('hidden');
+                document.getElementById('logoutBtn').classList.remove('hidden');
+                loadDresses();
+            } else {
+                alert("Access Denied.");
+            }
+        }
+
+        function logout() {
+            isAdmin = false;
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            loadDresses();
+        }
+
+        async function saveDress() {
+            const name = document.getElementById('dressName').value;
+            const price = document.getElementById('dressPrice').value;
+            const image = document.getElementById('dressImage').value;
+
+            if(!name || !price || !image) return alert("All fields are mandatory.");
+
+            const res = await fetch('/api/save', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name, price, image, id: Date.now() })
+            });
+
+            if(res.ok) {
+                alert("Listing Published Successfully.");
+                document.querySelectorAll('input').forEach(i => i.value = '');
+                loadDresses();
+            }
+        }
+
+        async function loadDresses() {
             const res = await fetch('/api/get-dresses');
             const data = await res.json();
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
+            const grid = document.getElementById('productGrid');
+            
+            if(!data || data.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10 tracking-widest">COLLECTION COMING SOON</p>';
+                return;
+            }
 
-            data.forEach((item, i) => {
-                grid.innerHTML += `
-                    <div class="card" style="animation: fadeIn 0.8s ease forwards ${i * 0.1}s; opacity:0;">
-                        <a href="${item.affiliate_link}" target="_blank">
-                            <div class="image-box">
-                                <img src="${item.image_url}" alt="${item.name}">
-                            </div>
-                        </a>
-                        <div class="card-info">
-                            <h3>${item.name}</h3>
-                            <div class="price">${item.price}</div>
-                            <a href="${item.affiliate_link}" target="_blank" class="buy-link">VIEW ON AMAZON</a>
-                        </div>
+            grid.innerHTML = data.map(item => `
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden bg-gray-100 aspect-[3/4]">
+                        <img src="${item.image}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=500&auto=format&fit=crop'">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
                     </div>
-                `;
-            });
-        } catch (e) { console.error("Error loading dresses"); }
-    }
+                    <div class="mt-4 flex justify-between items-start">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider">${item.name}</h3>
+                            <p class="text-xs text-gray-500 mt-1 uppercase">Limited Edition</p>
+                        </div>
+                        <p class="text-sm font-bold text-black">$${parseFloat(item.price).toFixed(2)}</p>
+                    </div>
+                    <button class="mt-4 w-full bg-transparent border border-black text-black py-2 text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300">Shop Now</button>
+                </div>
+            `).reverse().join('');
+        }
 
-    async function saveDress() {
-        const btn = document.querySelector('.publish-btn');
-        btn.innerText = "Saving...";
-        const payload = {
-            name: document.getElementById('name').value,
-            price: document.getElementById('price').value,
-            image_url: document.getElementById('image_url').value,
-            affiliate_link: document.getElementById('affiliate_link').value,
-            description: document.getElementById('description').value
-        };
-
-        const res = await fetch('/api/save', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        if (res.ok) { location.reload(); }
-        else { alert("Error saving dress!"); btn.innerText = "ADD TO BOUTIQUE"; }
-    }
-
-    const style = document.createElement('style');
-    style.innerHTML = `@keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }`;
-    document.head.appendChild(style);
-
-    loadDresses();
-</script>
-
+        loadDresses();
+    </script>
 </body>
-    </html>
+                                                       </html>
