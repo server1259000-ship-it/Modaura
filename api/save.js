@@ -1,25 +1,20 @@
 import { Redis } from '@upstash/redis'
 
-const redis = Redis.fromEnv()
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+})
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      const dress = req.body;
-      const currentData = await redis.get('dresses');
-      let dresses = [];
-      
-      if (currentData) {
-        dresses = typeof currentData === 'string' ? JSON.parse(currentData) : currentData;
-      }
-      
-      dresses.push(dress);
-      await redis.set('dresses', JSON.stringify(dresses));
-      
-      return res.status(200).json({ success: true });
+      const { name, price, image, link, desc, id } = req.body;
+      // Data ko list mein save kar rahe hain
+      await redis.lpush('dresses', JSON.stringify({ name, price, image, link, desc, id }));
+      return res.status(200).json({ message: 'Saved successfully' });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
   }
-  return res.status(405).json({ message: 'Method not allowed' });
+  res.status(405).json({ message: 'Method not allowed' });
 }
