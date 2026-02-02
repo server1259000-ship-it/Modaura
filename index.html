@@ -10,7 +10,6 @@
         body { font-family: 'Inter', sans-serif; background-color: #fcfcfc; color: #1a1a1a; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
         .admin-only { display: none; }
-        .btn-gold { background: linear-gradient(145deg, #c5a059, #b08d48); }
     </style>
 </head>
 <body>
@@ -27,9 +26,9 @@
             <input type="text" id="dressName" placeholder="Product Title" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm">
             <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm">
             <input type="text" id="dressImage" placeholder="Image URL (Link)" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2">
-            <input type="text" id="amazonLink" placeholder="Amazon Affiliate Link" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2 text-blue-600">
-            <textarea id="dressDesc" placeholder="Dress Specifications (Material, Fit, Occasion...)" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2 h-24"></textarea>
-            <button onclick="saveDress()" class="md:col-span-2 bg-[#1a1a1a] text-white p-5 text-[11px] uppercase tracking-[0.4em] hover:bg-[#b08d48] transition-all duration-500">Publish Listing</button>
+            <input type="text" id="amazonLink" placeholder="Amazon Affiliate Link" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2">
+            <textarea id="dressDesc" placeholder="Dress Specifications..." class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2 h-24"></textarea>
+            <button id="saveButton" onclick="saveDress()" class="md:col-span-2 bg-[#1a1a1a] text-white p-5 text-[11px] uppercase tracking-[0.4em] hover:bg-[#b08d48] transition-all duration-500">Publish Listing</button>
         </div>
     </div>
 
@@ -41,7 +40,7 @@
 
     <main class="max-w-[1400px] mx-auto px-10 pb-40">
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10 gap-y-20">
-            <p class="col-span-full text-center text-gray-300 text-[10px] tracking-[5px] py-20 italic">REFRESHING COLLECTION...</p>
+            <p id="loadingMsg" class="col-span-full text-center text-gray-300 text-[10px] tracking-[5px] py-20 italic">REFRESHING COLLECTION...</p>
         </div>
     </main>
 
@@ -56,7 +55,7 @@
                 document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('adminBtn').classList.add('hidden');
                 document.getElementById('logoutBtn').classList.remove('hidden');
-            } else { alert("Access Denied."); }
+            } else if(entry !== null) { alert("Access Denied."); }
         }
 
         function logout() {
@@ -67,53 +66,76 @@
         }
 
         async function saveDress() {
-            const name = document.getElementById('dressName').value;
-            const price = document.getElementById('dressPrice').value;
-            const image = document.getElementById('dressImage').value;
-            const link = document.getElementById('amazonLink').value;
-            const desc = document.getElementById('dressDesc').value;
+            const btn = document.getElementById('saveButton');
+            const data = {
+                name: document.getElementById('dressName').value,
+                price: document.getElementById('dressPrice').value,
+                image: document.getElementById('dressImage').value,
+                link: document.getElementById('amazonLink').value,
+                desc: document.getElementById('dressDesc').value,
+                id: Date.now()
+            };
 
-            if(!name || !price || !image || !link) return alert("All fields are mandatory.");
+            if(!data.name || !data.price || !data.image || !data.link) {
+                return alert("Please fill Title, Price, Image and Amazon Link!");
+            }
 
-            const res = await fetch('/api/save', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ name, price, image, link, desc, id: Date.now() })
-            });
+            btn.innerText = "PUBLISHING...";
+            btn.disabled = true;
 
-            if(res.ok) {
-                alert("Listing Live.");
-                location.reload();
+            try {
+                const res = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+
+                if(res.ok) {
+                    alert("Success! Listing is now Live.");
+                    location.reload();
+                } else {
+                    const err = await res.json();
+                    alert("Database Error: " + err.error);
+                }
+            } catch (e) {
+                alert("Connection Failed: " + e.message);
+            } finally {
+                btn.innerText = "PUBLISH LISTING";
+                btn.disabled = false;
             }
         }
 
         async function loadDresses() {
-            const res = await fetch('/api/get-dresses');
-            const data = await res.json();
-            const grid = document.getElementById('productGrid');
-            
-            if(!data || data.length === 0) {
-                grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-20 text-[10px] tracking-[5px]">NEW DROPS COMING SOON</p>';
-                return;
-            }
+            try {
+                const res = await fetch('/api/get-dresses');
+                const data = await res.json();
+                const grid = document.getElementById('productGrid');
+                
+                if(!data || data.length === 0) {
+                    grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-20 text-[10px] tracking-[5px]">NEW DROPS COMING SOON</p>';
+                    return;
+                }
 
-            grid.innerHTML = data.map(item => `
-                <div class="group">
-                    <div class="relative overflow-hidden aspect-[3/4] bg-[#f9f9f9]">
-                        <img src="${item.image}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-                    </div>
-                    <div class="mt-8">
-                        <div class="flex justify-between items-baseline mb-3">
-                            <h3 class="text-[12px] font-semibold text-gray-900 uppercase tracking-widest truncate w-2/3">${item.name}</h3>
-                            <p class="text-sm font-luxury italic text-[#b08d48]">$${parseFloat(item.price).toFixed(2)}</p>
+                grid.innerHTML = data.map(item => `
+                    <div class="group">
+                        <div class="relative overflow-hidden aspect-[3/4] bg-[#f9f9f9]">
+                            <img src="${item.image}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x600?text=Dress+Image'">
                         </div>
-                        <p class="text-[11px] text-gray-400 leading-relaxed mb-8 font-light italic">${item.desc || 'Exclusively curated for the discerning eye.'}</p>
-                        <a href="${item.link}" target="_blank" class="block w-full border border-gray-200 text-gray-900 text-center py-4 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-black hover:text-white transition-all duration-300 shadow-sm">Shop on Amazon</a>
+                        <div class="mt-8">
+                            <div class="flex justify-between items-baseline mb-3">
+                                <h3 class="text-[12px] font-semibold text-gray-900 uppercase tracking-widest truncate w-2/3">${item.name}</h3>
+                                <p class="text-sm font-luxury italic text-[#b08d48]">$${parseFloat(item.price).toFixed(2)}</p>
+                            </div>
+                            <p class="text-[11px] text-gray-400 leading-relaxed mb-8 font-light italic line-clamp-2">${item.desc || 'Exclusively curated.'}</p>
+                            <a href="${item.link}" target="_blank" class="block w-full border border-gray-200 text-gray-900 text-center py-4 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-black hover:text-white transition-all duration-300 shadow-sm">Shop on Amazon</a>
+                        </div>
                     </div>
-                </div>
-            `).reverse().join('');
+                `).reverse().join('');
+            } catch (e) {
+                console.error("Load failed", e);
+            }
         }
         loadDresses();
     </script>
 </body>
-    </html>
+        </html>
