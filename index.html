@@ -10,21 +10,37 @@
         body { font-family: 'Inter', sans-serif; background-color: #fcfcfc; color: #1a1a1a; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
         .admin-only { display: none; }
+        
+        /* Pinterest Style Grid Fix for Mobile */
+        #productGrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Mobile: 2 per line */
+            gap: 12px;
+        }
+        @media (min-width: 1024px) {
+            #productGrid {
+                grid-template-columns: repeat(4, 1fr); /* Desktop: 4 per line */
+                gap: 40px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="sticky top-0 z-50 p-6 px-10 flex justify-between items-center bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <h1 class="text-2xl font-luxury italic tracking-[0.15em]">MODAURA</h1>
+    <nav class="sticky top-0 z-50 p-5 px-6 md:px-10 flex justify-between items-center bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <h1 class="text-xl md:text-2xl font-luxury italic tracking-[0.15em]">MODAURA</h1>
         <button id="adminBtn" onclick="toggleAdmin()" class="text-[9px] tracking-[3px] text-gray-400 uppercase hover:text-gray-900 transition">Partner Access</button>
         <button id="logoutBtn" onclick="logout()" class="hidden text-[10px] text-red-800 font-bold uppercase tracking-widest">Exit Studio</button>
     </nav>
 
-    <div id="adminPanel" class="admin-only max-w-3xl mx-auto mt-10 p-10 bg-white shadow-2xl rounded-sm border-t-2 border-[#b08d48]">
+    <div id="adminPanel" class="admin-only max-w-3xl mx-auto mt-10 p-6 md:p-10 bg-white shadow-2xl rounded-sm border-t-2 border-[#b08d48]">
         <h2 class="text-xs tracking-[0.3em] text-[#b08d48] uppercase mb-10 text-center font-semibold">Inventory Manager</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input type="text" id="dressName" placeholder="Product Title" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm">
             <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm">
+            
+            <input type="text" id="dressCategory" placeholder="Category (e.g. Party Wear, Casual)" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2">
+            
             <input type="text" id="dressImage" placeholder="Image URL (Link)" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2">
             <input type="text" id="amazonLink" placeholder="Amazon Affiliate Link" class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2">
             <textarea id="dressDesc" placeholder="Dress Specifications..." class="w-full p-4 border-b border-gray-100 focus:border-[#b08d48] outline-none transition text-sm md:col-span-2 h-24"></textarea>
@@ -32,14 +48,14 @@
         </div>
     </div>
 
-    <header class="text-center py-28 px-6">
+    <header class="text-center py-20 md:py-28 px-6">
         <span class="text-[9px] tracking-[0.6em] text-gray-400 uppercase mb-6 block">Est. 2026 • New York</span>
-        <h2 class="text-7xl font-luxury italic text-[#1a1a1a] mb-8">Curated Elegance</h2>
+        <h2 class="text-4xl md:text-7xl font-luxury italic text-[#1a1a1a] mb-8">Curated Elegance</h2>
         <p class="text-gray-500 text-[10px] tracking-[0.4em] uppercase font-light max-w-lg mx-auto leading-loose">High-end selections for the modern silhouette</p>
     </header>
 
-    <main class="max-w-[1400px] mx-auto px-10 pb-40">
-        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10 gap-y-20">
+    <main class="max-w-[1400px] mx-auto px-4 md:px-10 pb-40">
+        <div id="productGrid">
             <p id="loadingMsg" class="col-span-full text-center text-gray-300 text-[10px] tracking-[5px] py-20 italic">REFRESHING COLLECTION...</p>
         </div>
     </main>
@@ -70,6 +86,7 @@
             const data = {
                 name: document.getElementById('dressName').value,
                 price: document.getElementById('dressPrice').value,
+                category: document.getElementById('dressCategory').value || "Collection",
                 image: document.getElementById('dressImage').value,
                 link: document.getElementById('amazonLink').value,
                 desc: document.getElementById('dressDesc').value,
@@ -84,6 +101,7 @@
             btn.disabled = true;
 
             try {
+                // Pointing to your save.js
                 const res = await fetch('/api/save', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -95,18 +113,15 @@
                     location.reload();
                 } else {
                     const err = await res.json();
-                    alert("Database Error: " + err.error);
+                    alert("Error: " + err.error);
                 }
-            } catch (e) {
-                alert("Connection Failed: " + e.message);
-            } finally {
-                btn.innerText = "PUBLISH LISTING";
-                btn.disabled = false;
-            }
+            } catch (e) { alert("Connection Failed!"); }
+            btn.innerText = "PUBLISH LISTING"; btn.disabled = false;
         }
 
         async function loadDresses() {
             try {
+                // Pointing to your get-dresses.js
                 const res = await fetch('/api/get-dresses');
                 const data = await res.json();
                 const grid = document.getElementById('productGrid');
@@ -120,22 +135,20 @@
                     <div class="group">
                         <div class="relative overflow-hidden aspect-[3/4] bg-[#f9f9f9]">
                             <img src="${item.image}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x600?text=Dress+Image'">
+                            <div class="absolute top-2 left-2 bg-white/90 px-2 py-1 text-[7px] tracking-widest uppercase font-bold text-black border border-gray-100">${item.category || 'Luxury'}</div>
                         </div>
-                        <div class="mt-8">
-                            <div class="flex justify-between items-baseline mb-3">
-                                <h3 class="text-[12px] font-semibold text-gray-900 uppercase tracking-widest truncate w-2/3">${item.name}</h3>
-                                <p class="text-sm font-luxury italic text-[#b08d48]">$${parseFloat(item.price).toFixed(2)}</p>
-                            </div>
-                            <p class="text-[11px] text-gray-400 leading-relaxed mb-8 font-light italic line-clamp-2">${item.desc || 'Exclusively curated.'}</p>
-                            <a href="${item.link}" target="_blank" class="block w-full border border-gray-200 text-gray-900 text-center py-4 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-black hover:text-white transition-all duration-300 shadow-sm">Shop on Amazon</a>
+                        <div class="mt-4 md:mt-8">
+                            <h3 class="text-[10px] md:text-[11px] font-semibold text-gray-900 uppercase tracking-[0.1em] truncate">${item.name}</h3>
+                            <p class="text-[11px] font-luxury italic text-[#b08d48] mt-1 mb-4">$${parseFloat(item.price).toFixed(2)}</p>
+                            <a href="${item.link}" target="_blank" class="block w-full border border-gray-300 text-gray-900 text-center py-3 text-[9px] uppercase tracking-[0.2em] font-bold hover:bg-black hover:text-white transition-all duration-300">Shop</a>
                         </div>
                     </div>
                 `).reverse().join('');
             } catch (e) {
-                console.error("Load failed", e);
+                document.getElementById('loadingMsg').innerText = "FAILED TO LOAD COLLECTION.";
             }
         }
         loadDresses();
     </script>
 </body>
-        </html>
+                </html>
