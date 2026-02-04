@@ -10,6 +10,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #fcfcfc; color: #1a1a1a; scroll-behavior: smooth; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
         .hidden { display: none; }
+        .admin-only { display: none; }
         #productGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         @media (min-width: 1024px) { #productGrid { grid-template-columns: repeat(4, 1fr); gap: 40px; } }
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
@@ -20,12 +21,27 @@
 
     <nav class="sticky top-0 z-50 p-5 px-6 md:px-10 flex justify-between items-center bg-white/95 backdrop-blur-sm border-b border-gray-100">
         <h1 class="text-xl md:text-2xl font-luxury italic tracking-[0.15em] cursor-pointer hover:opacity-70 transition" onclick="goHome()">MODAURA</h1>
-        <div class="flex items-center gap-6">
-            <button onclick="goHome()" class="text-[10px] tracking-[2px] text-gray-900 uppercase font-semibold border-b border-black">Collection</button>
+        <div class="flex items-center gap-4">
+            <button id="adminBtn" onclick="toggleAdmin()" class="text-[9px] tracking-[3px] text-gray-400 uppercase hover:text-gray-900 transition">Partner Access</button>
+            <button id="logoutBtn" onclick="logout()" class="hidden text-[10px] text-red-800 font-bold uppercase tracking-widest">Exit Studio</button>
+            <button onclick="goHome()" class="text-[10px] tracking-[2px] text-gray-900 uppercase font-semibold border-b border-black">Home</button>
         </div>
     </nav>
 
     <main class="max-w-[1400px] mx-auto px-4 md:px-10 py-10">
+        
+        <div id="adminPanel" class="admin-only max-w-3xl mx-auto mt-10 p-6 md:p-10 bg-white shadow-2xl border-t-2 border-black mb-10">
+            <h2 class="text-xs tracking-[0.3em] text-black uppercase mb-10 text-center font-semibold">Inventory Manager</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input type="text" id="dressName" placeholder="Product Title" class="w-full p-4 border-b border-gray-100 outline-none text-sm">
+                <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-4 border-b border-gray-100 outline-none text-sm">
+                <input type="text" id="dressCategory" placeholder="Category" class="w-full p-4 border-b border-gray-100 outline-none text-sm md:col-span-2">
+                <input type="text" id="dressImage" placeholder="Image URL" class="w-full p-4 border-b border-gray-100 outline-none text-sm md:col-span-2">
+                <input type="text" id="amazonLink" placeholder="Amazon Link" class="w-full p-4 border-b border-gray-100 outline-none text-sm md:col-span-2">
+                <textarea id="dressDesc" placeholder="Description..." class="w-full p-4 border-b border-gray-100 outline-none text-sm md:col-span-2 h-24"></textarea>
+                <button id="saveButton" onclick="saveDress()" class="md:col-span-2 bg-[#1a1a1a] text-white p-5 text-[11px] uppercase tracking-[0.4em] hover:bg-black transition-all">Publish Listing</button>
+            </div>
+        </div>
         
         <div id="homeView" class="fade-in">
             <header class="text-center py-10">
@@ -45,36 +61,63 @@
                     <h2 id="detailTitle" class="text-3xl md:text-5xl font-luxury italic mb-6 leading-tight"></h2>
                     <p id="detailPrice" class="text-2xl font-bold text-[#b08d48] mb-8"></p>
                     <p id="detailDesc" class="text-gray-500 text-sm leading-relaxed mb-10"></p>
-                    
                     <a id="detailLink" href="#" target="_blank" class="bg-[#1a1a1a] text-white text-center py-5 text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all">Buy on Amazon</a>
-                    
-                    <button onclick="goHome()" class="mt-8 text-[10px] text-gray-400 uppercase tracking-[3px] hover:text-black transition">
-                        ← Back to Collection
-                    </button>
+                    <button onclick="goHome()" class="mt-8 text-[10px] text-gray-400 uppercase tracking-[3px] hover:text-black transition">← Back to Collection</button>
                 </div>
             </div>
-
             <div class="border-t border-gray-100 pt-16">
                 <h3 class="text-center font-luxury italic text-2xl mb-12">More to Discover</h3>
                 <div id="relatedGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
             </div>
         </div>
-
     </main>
 
     <script>
+        const PASS = "rafay1259";
         let allProducts = [];
+
+        // Admin Functions
+        function toggleAdmin() {
+            const entry = prompt("Access Key:");
+            if (entry === PASS) {
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminBtn').classList.add('hidden');
+                document.getElementById('logoutBtn').classList.remove('hidden');
+            } else if(entry !== null) { alert("Access Denied."); }
+        }
+
+        function logout() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+        }
+
+        async function saveDress() {
+            const btn = document.getElementById('saveButton');
+            const data = {
+                name: document.getElementById('dressName').value,
+                price: document.getElementById('dressPrice').value,
+                category: document.getElementById('dressCategory').value || "Luxury",
+                image: document.getElementById('dressImage').value,
+                link: document.getElementById('amazonLink').value,
+                desc: document.getElementById('dressDesc').value,
+                id: Date.now()
+            };
+            if(!data.name || !data.price || !data.image || !data.link) return alert("Fill Essential Fields!");
+            btn.innerText = "PUBLISHING...";
+            try {
+                const res = await fetch('/api/save', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+                if(res.ok) location.reload();
+            } catch (e) { alert("Error!"); }
+            btn.innerText = "PUBLISH LISTING";
+        }
 
         async function loadDresses() {
             try {
-                // Yahan aapki api ka link aayega
                 const res = await fetch('/api/get-dresses');
                 allProducts = await res.json();
-                
-                // Deep Link Logic: Agar URL mein ?id=... ho toh seedha detail dikhao
                 const urlParams = new URLSearchParams(window.location.search);
                 const productId = urlParams.get('id');
-
                 if (productId && allProducts.some(p => p.id == productId)) {
                     showDetails(productId, false); 
                 } else {
@@ -102,21 +145,16 @@
         function showDetails(id, updateURL = true) {
             const product = allProducts.find(p => p.id == id);
             if(!product) return goHome();
-
-            // URL update taake Pinterest se aane wala link kaam kare
             if(updateURL) {
                 const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;
                 window.history.pushState({path:newurl},'',newurl);
             }
-
             document.getElementById('mainDetailImg').src = product.image;
             document.getElementById('detailTitle').innerText = product.name;
             document.getElementById('detailPrice').innerText = `$${parseFloat(product.price).toFixed(2)}`;
             document.getElementById('detailCategory').innerText = product.category || "Luxury Collection";
             document.getElementById('detailDesc').innerText = product.desc || "Exclusively curated high-end fashion piece.";
             document.getElementById('detailLink').href = product.link;
-
-            // Related Products (Pinterest Style)
             const related = allProducts.filter(p => p.id != id).sort(() => 0.5 - Math.random()).slice(0, 4);
             document.getElementById('relatedGrid').innerHTML = related.map(item => `
                 <div class="cursor-pointer group" onclick="showDetails(${item.id})">
@@ -124,7 +162,6 @@
                     <p class="text-[9px] uppercase font-bold text-[#b08d48]">$${item.price}</p>
                 </div>
             `).join('');
-
             document.getElementById('homeView').style.display = 'none';
             document.getElementById('detailView').classList.remove('hidden');
             window.scrollTo(0,0);
