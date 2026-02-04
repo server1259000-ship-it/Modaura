@@ -40,7 +40,6 @@
     </nav>
 
     <main class="max-w-[1400px] mx-auto px-4 md:px-10 py-10">
-        
         <div id="homeView">
             <header class="text-center py-10">
                 <span class="text-[9px] tracking-[0.6em] text-gray-400 uppercase mb-4 block">Est. 2026 • New York</span>
@@ -58,14 +57,11 @@
                     <span id="detailCategory" class="text-[10px] tracking-[4px] text-[#b08d48] uppercase font-bold mb-4">Luxury</span>
                     <h2 id="detailTitle" class="text-3xl md:text-5xl font-luxury italic mb-6 leading-tight"></h2>
                     <p id="detailPrice" class="text-3xl price-tag mb-8"></p>
-                    <a id="detailLink" href="#" target="_blank" class="bg-[#1a1a1a] text-white text-center py-5 text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all shadow-lg">Buy Now</a>
-                    <button onclick="goHome()" class="mt-8 text-[10px] text-gray-400 uppercase tracking-[3px] hover:text-black transition">
-                        ← Back to Collection
-                    </button>
+                    <a id="detailLink" href="#" target="_blank" class="bg-[#1a1a1a] text-white text-center py-5 text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all shadow-lg">Buy on Amazon</a>
+                    <button onclick="goHome()" class="mt-8 text-[10px] text-gray-400 uppercase tracking-[3px] hover:text-black transition">← Back</button>
                 </div>
             </div>
         </div>
-
     </main>
 
     <script>
@@ -113,12 +109,12 @@
             window.scrollTo(0,0);
         }
 
-        // Admin functionality wapas fix kar di
+        // --- PASSWORD SYSTEM FIX ---
         function checkAdmin() {
             const password = prompt("Access Key:");
             if (password === "rafay1259") {
-                // Yahan agar error aaye toh dekhna file ka name admin.html hai ya kuch aur
-                window.location.href = "https://modaura-git-main-server1259000-ship-its-projects.vercel.app/admin"; 
+                // Hum direct "/admin" par bhejenge jo Vercel par configure hota hai
+                window.location.href = "/admin"; 
             } else if (password !== null) {
                 alert("Wrong Password!");
             }
