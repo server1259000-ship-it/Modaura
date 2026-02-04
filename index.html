@@ -6,10 +6,9 @@
     
     <title>Modaura | Luxury Fashion & Curated Elegance</title>
     <meta property="og:title" content="Modaura Luxury Collection">
-    <meta property="og:description" content="Discover premium luxury fashion. Shop the latest trends curated for elegance.">
+    <meta property="og:description" content="Discover premium luxury fashion curated for elegance. Shop the latest trends.">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Modaura">
-    <meta property="og:image" content="https://yourwebsite.com/logo-preview.jpg">
+    <meta property="og:image" content="https://modaura.vercel.app/logo-preview.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,600;1,700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -20,7 +19,7 @@
         .price-tag { color: #b08d48; font-weight: 700; }
         .hidden { display: none; }
         
-        /* Point 2: Loading Skeleton Effect */
+        /* Point 2: Loading Skeleton */
         .skeleton {
             background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
             background-size: 200% 100%;
@@ -31,21 +30,35 @@
             100% { background-position: -200% 0; }
         }
 
-        /* Point 6: Image Hover & Fast Transition */
-        .img-container img {
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        /* Image Hover Effect */
+        .img-container img { transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .group:hover img { transform: scale(1.05); }
 
-        #productGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        #productGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         @media (min-width: 1024px) { #productGrid { grid-template-columns: repeat(4, 1fr); gap: 40px; } }
+
+        .amazon-btn {
+            border: 1px solid #1a1a1a;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            display: block;
+            margin-top: 10px;
+        }
+        .amazon-btn:hover { background: #1a1a1a; color: white; }
     </style>
 </head>
 <body>
 
     <nav class="sticky top-0 z-50 p-5 px-6 md:px-10 flex justify-between items-center bg-white/95 backdrop-blur-sm border-b border-gray-100">
         <h1 class="text-xl md:text-2xl font-luxury italic tracking-[0.15em] cursor-pointer" onclick="goHome()">MODAURA</h1>
-        <button onclick="goHome()" class="text-[10px] tracking-[2px] uppercase font-semibold border-b border-black">Home</button>
+        <div class="flex items-center gap-6">
+            <button onclick="goHome()" class="text-[10px] tracking-[2px] uppercase font-semibold border-b border-black">Home</button>
+            <button onclick="checkAdmin()" class="text-[9px] tracking-[2px] text-gray-400 uppercase hover:text-black transition">Partner Access</button>
+        </div>
     </nav>
 
     <main class="max-w-[1400px] mx-auto px-4 md:px-10 py-10">
@@ -56,8 +69,6 @@
                 <h2 class="text-4xl md:text-6xl font-luxury italic mb-12">Curated Elegance</h2>
             </header>
             <div id="productGrid">
-                <div class="skeleton aspect-[3/4] w-full"></div>
-                <div class="skeleton aspect-[3/4] w-full"></div>
                 <div class="skeleton aspect-[3/4] w-full"></div>
                 <div class="skeleton aspect-[3/4] w-full"></div>
             </div>
@@ -72,8 +83,8 @@
                     <span id="detailCategory" class="text-[10px] tracking-[4px] text-[#b08d48] uppercase font-bold mb-4">Luxury</span>
                     <h2 id="detailTitle" class="text-3xl md:text-5xl font-luxury italic mb-6"></h2>
                     <p id="detailPrice" class="text-3xl price-tag mb-8"></p>
-                    <a id="detailLink" href="#" target="_blank" class="bg-[#1a1a1a] text-white text-center py-5 text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all">Buy on Amazon</a>
-                    <button onclick="goHome()" class="mt-8 text-[10px] text-gray-400 uppercase tracking-[3px]">← Back</button>
+                    <a id="detailLink" href="#" target="_blank" class="bg-[#1a1a1a] text-white text-center py-5 text-[11px] font-bold uppercase tracking-[0.3em] hover:opacity-90 transition-all">Buy on Amazon</a>
+                    <button onclick="goHome()" class="mt-8 text-[10px] text-gray-400 uppercase tracking-[3px]">← Back to Collection</button>
                 </div>
             </div>
 
@@ -86,22 +97,38 @@
     </main>
 
     <script>
-        let allProducts = [
-            { id: 1, name: "Midnight Velvet Gala", price: 145.00, image: "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7", link: "#" },
-            { id: 2, name: "Boho Chic Floral", price: 85.00, image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1", link: "#" }
-        ];
+        let allProducts = [];
+        let recentlyViewed = JSON.parse(localStorage.getItem('modaura_recent')) || [];
 
-        let recentlyViewed = [];
+        async function loadData() {
+            try {
+                // Neon Database API Call
+                const res = await fetch('/api/get-dresses');
+                allProducts = await res.json();
+                renderGrid(allProducts);
+            } catch (e) {
+                console.error("API Error:", e);
+                // Fallback Sample
+                allProducts = [
+                    { id: 1, name: "Midnight Velvet Gala", price: 145.00, image: "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7", link: "https://amazon.com" },
+                    { id: 2, name: "Boho Chic Floral", price: 85.00, image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1", link: "https://amazon.com" }
+                ];
+                renderGrid(allProducts);
+            }
+        }
 
         function renderGrid(data) {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = data.map(item => `
-                <div class="group cursor-pointer" onclick="showDetails(${item.id})">
-                    <div class="relative overflow-hidden aspect-[3/4] bg-[#f9f9f9] mb-4 img-container">
+                <div class="group">
+                    <div class="relative overflow-hidden aspect-[3/4] bg-[#f9f9f9] mb-4 img-container cursor-pointer" onclick="showDetails(${item.id})">
                         <img src="${item.image}" loading="lazy" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">${item.name}</h3>
-                    <p class="text-[15px] price-tag">$${item.price.toFixed(2)}</p>
+                    <div class="cursor-pointer" onclick="showDetails(${item.id})">
+                        <h3 class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">${item.name}</h3>
+                        <p class="text-[15px] price-tag">$${parseFloat(item.price).toFixed(2)}</p>
+                    </div>
+                    <a href="${item.link}" target="_blank" class="amazon-btn">Buy with Amazon</a>
                 </div>
             `).join('');
         }
@@ -110,15 +137,16 @@
             const product = allProducts.find(p => p.id == id);
             if(!product) return;
 
-            // Update Recently Viewed (Point 3)
-            if(!recentlyViewed.includes(product)) {
+            // Update Recently Viewed
+            if(!recentlyViewed.some(p => p.id === product.id)) {
                 recentlyViewed.unshift(product);
                 if(recentlyViewed.length > 4) recentlyViewed.pop();
+                localStorage.setItem('modaura_recent', JSON.stringify(recentlyViewed));
             }
 
             document.getElementById('mainDetailImg').src = product.image;
             document.getElementById('detailTitle').innerText = product.name;
-            document.getElementById('detailPrice').innerText = `$${product.price.toFixed(2)}`;
+            document.getElementById('detailPrice').innerText = `$${parseFloat(product.price).toFixed(2)}`;
             document.getElementById('detailLink').href = product.link;
 
             document.getElementById('homeView').classList.add('hidden');
@@ -148,8 +176,16 @@
             window.scrollTo(0,0);
         }
 
-        // Simulate API loading for Skeleton
-        setTimeout(() => renderGrid(allProducts), 1000);
+        function checkAdmin() {
+            const password = prompt("Access Key:");
+            if (password === "rafay1259") {
+                window.location.href = "/admin"; // Check if your path is /admin or /admin.html
+            } else if (password !== null) {
+                alert("Wrong Password!");
+            }
+        }
+
+        loadData();
     </script>
 </body>
 </html>
