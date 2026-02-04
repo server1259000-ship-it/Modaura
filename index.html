@@ -4,26 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modaura | Luxury Fashion</title>
-    <meta property="og:title" content="Modaura Luxury Collection">
-    <meta property="og:description" content="Discover premium luxury fashion curated for elegance.">
-    <meta property="og:image" content="https://modaura.vercel.app/logo-preview.jpg">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1a1a1a; scroll-behavior: smooth; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
         .hidden { display: none; }
-        .price-tag { color: #b08d48; font-weight: 700; } /* Point 6: Golden Price */
+        .price-tag { color: #b08d48; font-weight: 700; }
         
-        /* Point 2: Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
         #productGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         @media (min-width: 1024px) { #productGrid { grid-template-columns: repeat(4, 1fr); gap: 40px; } }
         
@@ -46,8 +34,8 @@
 
     <nav class="sticky top-0 z-50 p-5 px-6 md:px-10 flex justify-between items-center bg-white/95 backdrop-blur-sm border-b border-gray-100">
         <h1 class="text-xl md:text-2xl font-luxury italic tracking-[0.15em] cursor-pointer" onclick="goHome()">MODAURA</h1>
+        
         <div class="flex items-center gap-6">
-            <button onclick="goHome()" class="text-[10px] tracking-[2px] uppercase font-semibold border-b border-black">Home</button>
             <button onclick="checkAdmin()" class="text-[9px] tracking-[2px] text-gray-400 uppercase hover:text-black transition">Partner Access</button>
         </div>
     </nav>
@@ -58,10 +46,7 @@
                 <span class="text-[9px] tracking-[0.6em] text-gray-400 uppercase mb-4 block">Est. 2026 • New York</span>
                 <h2 class="text-4xl md:text-6xl font-luxury italic mb-12">Curated Elegance</h2>
             </header>
-            <div id="productGrid">
-                <div class="skeleton aspect-[3/4] w-full"></div>
-                <div class="skeleton aspect-[3/4] w-full"></div>
-            </div>
+            <div id="productGrid"></div>
         </div>
 
         <div id="detailView" class="hidden">
@@ -70,30 +55,27 @@
                     <img id="mainDetailImg" src="" class="w-full h-auto object-cover">
                 </div>
                 <div class="flex flex-col justify-center">
-                    <span id="detailCategory" class="text-[10px] tracking-[4px] text-[#b08d48] uppercase font-bold mb-4">Luxury</span>
+                    <span id="detailCategory" class="text-[10px] tracking-[4px] text-[#b08d48] uppercase font-bold mb-4">Luxury Collection</span>
                     <h2 id="detailTitle" class="text-3xl md:text-5xl font-luxury italic mb-6 leading-tight"></h2>
                     <p id="detailPrice" class="text-3xl price-tag mb-8"></p>
-                    <a id="detailLink" href="#" target="_blank" class="bg-[#1a1a1a] text-white text-center py-5 text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all shadow-lg">Buy on Amazon</a>
-                    <button onclick="goHome()" class="mt-8 text-[10px] text-gray-400 uppercase tracking-[3px] hover:text-black transition">← Back</button>
+                    <a id="detailLink" href="#" target="_blank" class="bg-[#1a1a1a] text-white text-center py-5 text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-black transition-all shadow-lg">Buy Now</a>
+                    <button onclick="goHome()" class="mt-8 text-[10px] text-gray-400 uppercase tracking-[3px] hover:text-black transition">
+                        ← Back to Collection
+                    </button>
                 </div>
-            </div>
-            <div id="recentSection" class="border-t border-gray-100 pt-16 hidden">
-                <h3 class="text-center font-luxury italic text-2xl mb-12">Recently Viewed</h3>
-                <div id="recentGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
             </div>
         </div>
     </main>
 
     <script>
         let allProducts = [];
-        let recentlyViewed = JSON.parse(localStorage.getItem('modaura_recent')) || [];
 
         async function loadData() {
             try {
                 const res = await fetch('/api/get-dresses');
                 allProducts = await res.json();
                 renderGrid(allProducts);
-            } catch (e) { console.error("Error:", e); }
+            } catch (e) { console.error("Error loading data:", e); }
         }
 
         function renderGrid(data) {
@@ -115,36 +97,13 @@
         function showDetails(id) {
             const product = allProducts.find(p => p.id == id);
             if(!product) return;
-            
-            // Recently Viewed logic
-            if(!recentlyViewed.some(p => p.id === product.id)) {
-                recentlyViewed.unshift(product);
-                if(recentlyViewed.length > 4) recentlyViewed.pop();
-                localStorage.setItem('modaura_recent', JSON.stringify(recentlyViewed));
-            }
-
             document.getElementById('mainDetailImg').src = product.image;
             document.getElementById('detailTitle').innerText = product.name;
             document.getElementById('detailPrice').innerText = `$${parseFloat(product.price).toFixed(2)}`;
             document.getElementById('detailLink').href = product.link;
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('detailView').classList.remove('hidden');
-            renderRecent();
             window.scrollTo(0,0);
-        }
-
-        function renderRecent() {
-            const section = document.getElementById('recentSection');
-            const grid = document.getElementById('recentGrid');
-            if(recentlyViewed.length > 1) {
-                section.classList.remove('hidden');
-                grid.innerHTML = recentlyViewed.slice(1).map(item => `
-                    <div class="cursor-pointer opacity-70 hover:opacity-100" onclick="showDetails(${item.id})">
-                        <img src="${item.image}" class="aspect-[3/4] object-cover mb-2">
-                        <p class="text-[10px] font-bold text-[#b08d48]">$${item.price}</p>
-                    </div>
-                `).join('');
-            }
         }
 
         function goHome() {
@@ -153,12 +112,11 @@
             window.scrollTo(0,0);
         }
 
-        // --- PASSWORD SYSTEM FIX ---
         function checkAdmin() {
             const password = prompt("Access Key:");
             if (password === "rafay1259") {
-                // Hum wapas usi URL par bhej rahe hain jahan aapka admin panel hai
-                window.location.href = "https://modaura-git-main-server1259000-ship-its-projects.vercel.app/admin";
+                // Correct path for your Vercel admin panel
+                window.location.href = "https://modaura-git-main-server1259000-ship-its-projects.vercel.app/admin"; 
             } else if (password !== null) {
                 alert("Wrong Password!");
             }
