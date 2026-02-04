@@ -5,88 +5,196 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modaura | New York Luxury</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,600&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #fff; color: #1a1a1a; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #1a1a1a; scroll-behavior: smooth; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
         .hidden { display: none; }
         .admin-only { display: none; }
         
-        /* Modern Minimalist Grid */
+        /* Fixed Height Container for Amazon Images */
+        .img-wrapper {
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .img-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Is se Amazon ki koi bhi image kategi nahi */
+            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .group:hover .img-wrapper img { transform: scale(1.05); }
+
         #productGrid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             column-gap: 20px;
             row-gap: 40px;
         }
+
         @media (min-width: 1024px) {
             #productGrid { grid-template-columns: repeat(3, 1fr); gap: 60px; }
+            .img-wrapper { height: 550px; }
         }
 
-        /* Smooth Image Hover */
-        .img-container img {
-            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        @media (max-width: 640px) {
+            .img-wrapper { height: 280px; }
         }
-        .group:hover .img-container img { transform: scale(1.05); }
+
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <nav class="p-8 flex justify-between items-center bg-white sticky top-0 z-50">
-        <h1 class="text-2xl font-luxury italic tracking-[0.2em] cursor-pointer" onclick="goHome()">MODAURA</h1>
-        <div class="flex gap-8 text-[10px] uppercase tracking-[3px] items-center">
+    <nav class="p-6 md:p-8 flex justify-between items-center bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-50">
+        <h1 class="text-xl md:text-2xl font-luxury italic tracking-[0.2em] cursor-pointer" onclick="goHome()">MODAURA</h1>
+        <div class="flex gap-6 md:gap-10 text-[9px] uppercase tracking-[3px] items-center">
             <button id="adminBtn" onclick="toggleAdmin()" class="text-gray-400 hover:text-black transition">Studio</button>
-            <button onclick="goHome()" class="font-bold border-b border-black">Collection</button>
+            <button id="logoutBtn" onclick="logout()" class="hidden text-red-700 font-bold">Exit</button>
+            <button onclick="goHome()" class="font-bold border-b border-black pb-1">Collection</button>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 pb-20">
         
+        <div id="adminPanel" class="admin-only max-w-2xl mx-auto my-10 p-8 bg-white border border-gray-100 shadow-sm">
+            <h2 class="text-[10px] tracking-[4px] uppercase mb-8 text-center font-bold">Inventory Manager</h2>
+            <div class="grid grid-cols-1 gap-5">
+                <input type="text" id="dressName" placeholder="Product Title" class="w-full p-3 border-b border-gray-100 outline-none text-xs">
+                <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-3 border-b border-gray-100 outline-none text-xs">
+                <input type="text" id="dressCategory" placeholder="Category (e.g. Summer, Gala)" class="w-full p-3 border-b border-gray-100 outline-none text-xs">
+                <input type="text" id="dressImage" placeholder="Image URL (Amazon/Pinterest)" class="w-full p-3 border-b border-gray-100 outline-none text-xs">
+                <input type="text" id="amazonLink" placeholder="Amazon Product Link" class="w-full p-3 border-b border-gray-100 outline-none text-xs">
+                <textarea id="dressDesc" placeholder="Product Story/Details..." class="w-full p-3 border-b border-gray-100 outline-none text-xs h-24"></textarea>
+                <button id="saveButton" onclick="saveDress()" class="bg-black text-white p-4 text-[10px] uppercase tracking-[4px] hover:bg-zinc-800 transition">Publish to Archive</button>
+            </div>
+        </div>
+
         <div id="homeView" class="fade-in">
-            <header class="text-center py-24 border-b border-gray-50 mb-16">
-                <p class="text-[9px] tracking-[0.8em] text-gray-400 uppercase mb-8">Spring / Summer 2026</p>
-                <h2 class="text-6xl md:text-8xl font-luxury italic mb-8">Curated Elegance</h2>
-                <p class="text-xs tracking-[0.4em] text-gray-500 uppercase max-w-xl mx-auto leading-loose">A collection of timeless silhouettes designed for the contemporary woman.</p>
+            <header class="text-center py-20 md:py-32">
+                <p class="text-[8px] tracking-[0.8em] text-gray-400 uppercase mb-6">New York • Est. 2026</p>
+                <h2 class="text-5xl md:text-7xl font-luxury italic mb-8">Curated Elegance</h2>
+                <div class="w-10 h-[1px] bg-black mx-auto"></div>
             </header>
             <div id="productGrid"></div>
         </div>
 
-        <div id="detailView" class="hidden fade-in py-12">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
-                <div class="overflow-hidden bg-[#fbfbfb]">
-                    <img id="mainDetailImg" src="" class="w-full h-auto">
+        <div id="detailView" class="hidden fade-in py-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+                <div class="img-wrapper">
+                    <img id="mainDetailImg" src="">
                 </div>
-                <div class="flex flex-col justify-center px-4">
-                    <span id="detailCategory" class="text-[10px] tracking-[5px] text-[#b08d48] uppercase mb-6 font-medium"></span>
-                    <h2 id="detailTitle" class="text-5xl font-luxury italic mb-8 leading-tight"></h2>
-                    <p id="detailPrice" class="text-2xl font-light tracking-wider mb-10 text-black"></p>
-                    <p id="detailDesc" class="text-gray-500 text-sm leading-relaxed mb-12 font-light"></p>
-                    <a id="detailLink" href="#" target="_blank" class="bg-black text-white text-center py-6 text-[11px] uppercase tracking-[0.5em] hover:bg-[#b08d48] transition-all duration-500">Acquire Now</a>
-                    <button onclick="goHome()" class="mt-12 text-[10px] text-gray-400 uppercase tracking-[4px] hover:text-black self-start">← Return to Collection</button>
+                <div class="flex flex-col justify-center">
+                    <span id="detailCategory" class="text-[9px] tracking-[5px] text-[#b08d48] uppercase mb-4 font-bold"></span>
+                    <h2 id="detailTitle" class="text-4xl md:text-6xl font-luxury italic mb-8 leading-tight"></h2>
+                    <p id="detailPrice" class="text-2xl font-light tracking-widest mb-10 text-black"></p>
+                    <p id="detailDesc" class="text-gray-400 text-sm leading-relaxed mb-12 font-light max-w-md"></p>
+                    <a id="detailLink" href="#" target="_blank" class="bg-black text-white text-center py-6 text-[10px] uppercase tracking-[0.5em] hover:bg-zinc-800 transition-all">Acquire Now</a>
+                    <button onclick="goHome()" class="mt-12 text-[9px] text-gray-400 uppercase tracking-[4px] hover:text-black self-start">← Back to Gallery</button>
                 </div>
             </div>
         </div>
-
     </main>
 
     <script>
-        // ... (Same logic for loadDresses and showDetails as before, just update the innerHTML template)
-        
+        const PASS = "rafay1259";
+        let allProducts = [];
+
+        function toggleAdmin() {
+            const entry = prompt("Access Key:");
+            if (entry === PASS) {
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminBtn').classList.add('hidden');
+                document.getElementById('logoutBtn').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+        }
+
+        async function saveDress() {
+            const btn = document.getElementById('saveButton');
+            const data = {
+                name: document.getElementById('dressName').value,
+                price: document.getElementById('dressPrice').value,
+                category: document.getElementById('dressCategory').value || "Luxury",
+                image: document.getElementById('dressImage').value,
+                link: document.getElementById('amazonLink').value,
+                desc: document.getElementById('dressDesc').value,
+                id: Date.now()
+            };
+            if(!data.name || !data.price || !data.image) return alert("Missing Info");
+            btn.innerText = "UPLOADING...";
+            try {
+                const res = await fetch('/api/save', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+                if(res.ok) location.reload();
+            } catch (e) { alert("Error"); }
+        }
+
+        async function loadDresses() {
+            try {
+                const res = await fetch('/api/get-dresses');
+                allProducts = await res.json();
+                const urlParams = new URLSearchParams(window.location.search);
+                const productId = urlParams.get('id');
+                if (productId) showDetails(productId, false); 
+                else renderGrid(allProducts);
+            } catch (e) { console.error(e); }
+        }
+
         function renderGrid(data) {
+            window.scrollTo(0,0);
+            document.getElementById('homeView').style.display = 'block';
+            document.getElementById('detailView').classList.add('hidden');
             const grid = document.getElementById('productGrid');
             grid.innerHTML = data.map(item => `
                 <div class="group cursor-pointer" onclick="showDetails(${item.id})">
-                    <div class="img-container overflow-hidden aspect-[3/4] mb-6 bg-[#f7f7f7]">
-                        <img src="${item.image}" class="w-full h-full object-cover">
+                    <div class="img-wrapper mb-6">
+                        <img src="${item.image}" loading="lazy">
                     </div>
                     <div class="text-center">
-                        <h3 class="text-[11px] uppercase tracking-[0.2em] font-medium text-gray-900 mb-2">${item.name}</h3>
+                        <h3 class="text-[10px] uppercase tracking-[0.2em] font-medium text-gray-900 mb-2">${item.name}</h3>
                         <p class="text-[14px] font-luxury italic text-[#b08d48]">$${parseFloat(item.price).toFixed(2)}</p>
                     </div>
                 </div>
             `).reverse().join('');
         }
-        // ... (Rest of your script)
+
+        function showDetails(id, updateURL = true) {
+            const product = allProducts.find(p => p.id == id);
+            if(!product) return;
+            if(updateURL) {
+                const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;
+                window.history.pushState({path:newurl},'',newurl);
+            }
+            document.getElementById('mainDetailImg').src = product.image;
+            document.getElementById('detailTitle').innerText = product.name;
+            document.getElementById('detailPrice').innerText = `$${parseFloat(product.price).toFixed(2)}`;
+            document.getElementById('detailCategory').innerText = product.category;
+            document.getElementById('detailDesc').innerText = product.desc;
+            document.getElementById('detailLink').href = product.link;
+            document.getElementById('homeView').style.display = 'none';
+            document.getElementById('detailView').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function goHome() {
+            window.history.pushState({}, '', window.location.pathname);
+            renderGrid(allProducts);
+        }
+
+        loadDresses();
     </script>
 </body>
 </html>
