@@ -3,215 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modaura | Chic Modern Luxury</title>
+    <title>Modaura | New York Luxury Affiliate</title>
+    
+    <meta name="p:domain_verify" content="8f77429b5d097004d2a19de3d10f52ba"/>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: #FFF5F7; 
-            color: #2D2D2D; 
-            min-height: 100vh;
-        }
+        body { font-family: 'Inter', sans-serif; background: #FFF5F7; color: #2D2D2D; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
-        
-        /* Smooth Micro-Animations */
-        .product-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            border: 1px solid rgba(255, 182, 193, 0.2);
-        }
-        .product-card:hover {
-            transform: scale(1.02) translateY(-10px);
-            box-shadow: 0 30px 60px rgba(233, 30, 99, 0.1);
-        }
-        
-        .img-container {
-            aspect-ratio: 3/4;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #fff;
-            padding: 20px;
-        }
-        
-        .img-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: transform 1.2s ease;
-        }
-        
-        .product-card:hover img { transform: scale(1.1); }
-
-        /* Elegant Navigation */
-        nav {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 192, 203, 0.3);
-        }
-
-        .primary-btn {
-            background: #E91E63;
-            color: white;
-            transition: all 0.4s ease;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-        .primary-btn:hover { background: #AD1457; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(233, 30, 99, 0.2); }
-
+        .product-card { background: white; border-radius: 15px; transition: all 0.4s ease; border: 1px solid rgba(255,182,193,0.2); overflow: hidden; cursor: pointer; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(233,30,99,0.1); }
+        nav { background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); border-bottom: 1px solid #FFD9E8; }
+        .primary-btn { background: #E91E63; color: white; letter-spacing: 2px; font-weight: 600; transition: 0.3s; padding: 12px 24px; border-radius: 50px; text-transform: uppercase; font-size: 11px; }
+        .primary-btn:hover { background: #AD1457; transform: translateY(-2px); }
         .hidden { display: none; }
-        .admin-only { display: none; }
     </style>
 </head>
 <body>
-
-    <nav class="p-6 md:p-8 flex justify-between items-center sticky top-0 z-50">
-        <h1 class="text-2xl font-luxury italic tracking-[0.3em] text-[#AD1457] cursor-pointer" onclick="goHome()">MODAURA</h1>
-        <div class="flex gap-8 text-[10px] items-center uppercase tracking-widest font-bold">
-            <button id="adminBtn" onclick="toggleAdmin()" class="text-pink-300 hover:text-pink-600 transition">Studio</button>
-            <button onclick="goHome()" class="border-b-2 border-pink-500 pb-1">Archive</button>
+    <nav class="p-6 flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-luxury italic tracking-[0.2em] text-[#AD1457] cursor-pointer" onclick="goHome()">MODAURA</h1>
+        <div class="flex gap-6 text-[10px] uppercase tracking-widest font-bold items-center text-pink-300">
+            <button onclick="toggleAdmin()">Studio</button>
+            <button onclick="goHome()" class="border-b-2 border-pink-500 text-pink-700">Archive</button>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-12">
-        <div id="adminPanel" class="admin-only max-w-xl mx-auto mb-20 p-10 bg-white rounded-3xl shadow-2xl">
-            <h3 class="text-center font-luxury italic text-2xl mb-8">Studio Manager</h3>
-            <div class="space-y-4">
-                <input type="text" id="dressName" placeholder="Dress Name" class="w-full p-4 bg-pink-50 rounded-xl outline-none border-none text-sm">
-                <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-4 bg-pink-50 rounded-xl outline-none border-none text-sm">
-                <input type="text" id="dressCategory" placeholder="Category" class="w-full p-4 bg-pink-50 rounded-xl outline-none border-none text-sm">
-                <input type="text" id="dressImage" placeholder="Image URL" class="w-full p-4 bg-pink-50 rounded-xl outline-none border-none text-sm">
-                <input type="text" id="amazonLink" placeholder="Amazon Link" class="w-full p-4 bg-pink-50 rounded-xl outline-none border-none text-sm">
-                <textarea id="dressDesc" placeholder="Description" class="w-full p-4 bg-pink-50 rounded-xl outline-none border-none text-sm h-32"></textarea>
-                <button onclick="saveDress()" id="saveButton" class="primary-btn w-full py-5 rounded-xl">Publish to Collection</button>
-            </div>
-        </div>
-
         <div id="homeView">
-            <header class="text-center mb-24 fade-in">
-                <span class="text-[9px] tracking-[1em] text-pink-400 uppercase mb-6 block font-bold">A New York Narrative</span>
-                <h2 class="text-6xl md:text-8xl font-luxury italic mb-6">Vibrant Elegance</h2>
-                <p class="text-[10px] text-gray-400 uppercase tracking-[0.5em]">Defining the Modern Silhouette</p>
+            <header class="text-center mb-20">
+                <span class="text-[9px] tracking-[0.8em] text-pink-400 uppercase mb-4 block font-bold">A NEW YORK NARRATIVE</span>
+                <h2 class="text-7xl font-luxury italic mb-4">Vibrant Elegance</h2>
+                <p class="text-xs text-gray-400 uppercase tracking-[0.4em] font-light">Defining the Modern Silhouette</p>
             </header>
-            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"></div>
-            
-            <section class="mt-40 text-center border-t border-pink-100 pt-20 pb-20">
-                <h4 class="font-luxury italic text-4xl mb-4 text-pink-900">Follow the Journey</h4>
-                <p class="text-xs tracking-widest text-gray-400 uppercase mb-10">@MODAURA.OFFICIAL</p>
+            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+            <footer class="mt-40 text-center border-t border-pink-100 pt-20 pb-20">
+                <h4 class="font-luxury italic text-4xl mb-6 text-pink-900">Follow the Journey</h4>
                 <div class="flex justify-center gap-10">
-                    <a href="#" class="text-[10px] tracking-[4px] uppercase border-b border-black pb-1 hover:text-pink-600 transition">Instagram</a>
-                    <a href="#" class="text-[10px] tracking-[4px] uppercase border-b border-black pb-1 hover:text-pink-600 transition">Pinterest</a>
+                    <a href="https://www.tiktok.com/@modaura.pk" target="_blank" class="text-[10px] tracking-[4px] uppercase border-b border-black pb-1 hover:text-pink-600">TikTok</a>
+                    <a href="https://www.pinterest.com/Modaura_Official/" target="_blank" class="text-[10px] tracking-[4px] uppercase border-b border-black pb-1 hover:text-pink-600">Pinterest</a>
                 </div>
-            </section>
+            </footer>
         </div>
 
         <div id="detailView" class="hidden">
-            <div class="flex flex-col lg:flex-row gap-20">
-                <div class="w-full lg:w-1/2 bg-white rounded-3xl p-10 shadow-sm flex items-center justify-center">
-                    <img id="mainDetailImg" src="" class="max-w-full h-auto object-contain">
+            <div class="flex flex-col lg:flex-row gap-20 items-center">
+                <div class="w-full lg:w-1/2 bg-white rounded-3xl p-10">
+                    <img id="mainImg" src="" class="w-full h-auto object-contain rounded-xl shadow-lg">
                 </div>
-                <div class="w-full lg:w-1/2 flex flex-col justify-center">
-                    <span id="detailCategory" class="text-pink-500 font-bold tracking-[0.4em] text-[10px] mb-6 uppercase"></span>
-                    <h2 id="detailTitle" class="text-5xl md:text-6xl font-luxury italic mb-8 leading-tight"></h2>
-                    <p id="detailPrice" class="text-3xl text-pink-600 font-light mb-12"></p>
-                    <p id="detailDesc" class="text-gray-500 leading-relaxed mb-16 text-sm font-light italic"></p>
-                    <a id="detailLink" href="#" target="_blank" class="primary-btn py-6 rounded-2xl text-center shadow-2xl">Acquire via Amazon</a>
-                    <button onclick="goHome()" class="mt-12 text-[9px] text-gray-400 hover:text-pink-600 uppercase tracking-[4px] transition">← Back to Selection</button>
+                <div class="w-full lg:w-1/2 space-y-8">
+                    <h2 id="dTitle" class="text-5xl font-luxury italic text-pink-900"></h2>
+                    <p id="dPrice" class="text-3xl text-pink-600 font-light"></p>
+                    <p id="dDesc" class="text-gray-500 leading-relaxed italic"></p>
+                    <a id="amazonButton" href="#" target="_blank" class="primary-btn px-12 py-5 block text-center shadow-xl">Shop Collection on Amazon</a>
+                    <button onclick="goHome()" class="text-[10px] tracking-[3px] uppercase text-gray-400 hover:text-pink-500">← Back to Archive</button>
                 </div>
             </div>
+        </div>
+
+        <div id="adminView" class="hidden max-w-2xl mx-auto">
+            <h2 class="text-4xl font-luxury italic mb-10 text-center text-pink-900">The Studio</h2>
+            <form id="productForm" class="space-y-6 bg-white p-10 rounded-3xl border border-pink-100 shadow-sm">
+                <input type="text" id="name" placeholder="Item Name" class="w-full p-4 border-b border-pink-100 outline-none" required>
+                <input type="number" id="price" placeholder="Price ($)" class="w-full p-4 border-b border-pink-100 outline-none" required>
+                <input type="url" id="image" placeholder="Image URL (Direct Link)" class="w-full p-4 border-b border-pink-100 outline-none" required>
+                <input type="url" id="amazon" placeholder="Amazon Affiliate Link" class="w-full p-4 border-b border-pink-100 outline-none">
+                <textarea id="desc" placeholder="Short Description for Pinterest" class="w-full p-4 border-b border-pink-100 outline-none h-32"></textarea>
+                <button type="submit" class="w-full primary-btn py-4">Publish Piece</button>
+            </form>
         </div>
     </main>
 
     <script>
         const PASS = "rafay1259";
-        let allProducts = [];
+        const initialProducts = [
+            { id: 1, name: "MIDNIGHT VELVET GALA DRESS", price: 145, image: "https://images.pexels.com/photos/1755428/pexels-photo-1755428.jpeg", amazon: "#", desc: "Classic New York elegance." },
+            { id: 2, name: "BOHO CHIC FLORAL MAXI", price: 65, image: "https://images.pexels.com/photos/11103004/pexels-photo-11103004.jpeg", amazon: "#", desc: "Perfect for a summer brunch." }
+        ];
 
-        function toggleAdmin() {
-            const entry = prompt("Access Key:");
-            if (entry === PASS) {
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('adminBtn').classList.add('hidden');
-            }
-        }
+        let products = JSON.parse(localStorage.getItem('modaura_affiliate_data')) || initialProducts;
 
-        async function saveDress() {
-            const btn = document.getElementById('saveButton');
-            const data = {
-                name: document.getElementById('dressName').value,
-                price: document.getElementById('dressPrice').value,
-                category: document.getElementById('dressCategory').value || "Chic",
-                image: document.getElementById('dressImage').value,
-                link: document.getElementById('amazonLink').value,
-                desc: document.getElementById('dressDesc').value,
-                id: Date.now()
-            };
-            if(!data.name || !data.price || !data.image) return alert("Fill all details.");
-            btn.innerText = "UPLOADING...";
-            try {
-                const res = await fetch('/api/save', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-                if(res.ok) location.reload();
-            } catch (e) { alert("Error"); }
-        }
-
-        async function loadDresses() {
-            try {
-                const res = await fetch('/api/get-dresses');
-                allProducts = await res.json();
-                const urlParams = new URLSearchParams(window.location.search);
-                const productId = urlParams.get('id');
-                if (productId) showDetails(productId, false); 
-                else renderGrid(allProducts);
-            } catch (e) { console.error(e); }
-        }
-
-        function renderGrid(data) {
-            window.scrollTo(0,0);
-            document.getElementById('homeView').style.display = 'block';
-            document.getElementById('detailView').classList.add('hidden');
+        function renderGrid() {
             const grid = document.getElementById('productGrid');
-            grid.innerHTML = data.map(item => `
-                <div class="product-card cursor-pointer group" onclick="showDetails(${item.id})">
-                    <div class="img-container">
-                        <img src="${item.image}" loading="lazy">
+            grid.innerHTML = products.map(p => `
+                <div class="product-card group" onclick="showProduct(${p.id})">
+                    <div class="aspect-[3/4] overflow-hidden">
+                        <img src="${p.image}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                     </div>
                     <div class="p-8 text-center">
-                        <h3 class="text-[10px] uppercase tracking-[0.2em] font-medium text-gray-400 mb-3">${item.name}</h3>
-                        <p class="text-xl font-luxury italic text-pink-600">$${parseFloat(item.price).toFixed(2)}</p>
+                        <h3 class="font-luxury italic text-[11px] tracking-widest text-gray-500 mb-2 uppercase">${p.name}</h3>
+                        <p class="text-pink-600 font-luxury text-xl">$${p.price}.00</p>
                     </div>
                 </div>
-            `).reverse().join('');
+            `).join('');
         }
 
-        function showDetails(id, updateURL = true) {
-            const product = allProducts.find(p => p.id == id);
-            if(!product) return;
-            if(updateURL) {
-                const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;
-                window.history.pushState({path:newurl},'',newurl);
-            }
-            document.getElementById('mainDetailImg').src = product.image;
-            document.getElementById('detailTitle').innerText = product.name;
-            document.getElementById('detailPrice').innerText = `$${parseFloat(product.price).toFixed(2)}`;
-            document.getElementById('detailCategory').innerText = product.category;
-            document.getElementById('detailDesc').innerText = product.desc;
-            document.getElementById('detailLink').href = product.link;
-            document.getElementById('homeView').style.display = 'none';
+        function showProduct(id) {
+            const p = products.find(item => item.id == id);
+            document.getElementById('mainImg').src = p.image;
+            document.getElementById('dTitle').innerText = p.name;
+            document.getElementById('dPrice').innerText = `$${p.price}.00`;
+            document.getElementById('dDesc').innerText = p.desc || "Exclusively curated for the modern silhouette.";
+            document.getElementById('amazonButton').href = p.amazon || "#";
+            document.getElementById('homeView').classList.add('hidden');
             document.getElementById('detailView').classList.remove('hidden');
             window.scrollTo(0,0);
         }
 
-        function goHome() {
-            window.history.pushState({}, '', window.location.pathname);
-            renderGrid(allProducts);
+        function toggleAdmin() {
+            if(prompt("Enter Access Key:") === PASS) {
+                document.getElementById('homeView').classList.add('hidden');
+                document.getElementById('detailView').classList.add('hidden');
+                document.getElementById('adminView').classList.remove('hidden');
+            }
         }
 
-        loadDresses();
+        function goHome() {
+            document.getElementById('homeView').classList.remove('hidden');
+            document.getElementById('adminView').classList.add('hidden');
+            document.getElementById('detailView').classList.add('hidden');
+            renderGrid();
+        }
+
+        document.getElementById('productForm').onsubmit = (e) => {
+            e.preventDefault();
+            const newP = {
+                id: Date.now(),
+                name: document.getElementById('name').value.toUpperCase(),
+                price: document.getElementById('price').value,
+                image: document.getElementById('image').value,
+                amazon: document.getElementById('amazon').value,
+                desc: document.getElementById('desc').value
+            };
+            products.unshift(newP);
+            localStorage.setItem('modaura_affiliate_data', JSON.stringify(products));
+            goHome();
+        };
+
+        renderGrid();
     </script>
 </body>
     </html>
