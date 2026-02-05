@@ -45,12 +45,10 @@
                 <p class="text-xs text-gray-400 uppercase tracking-[0.4em] font-light italic">Defining the Modern Silhouette</p>
             </header>
 
-            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-24">
-                </div>
+            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-24"></div>
 
             <section class="text-center bg-white p-12 rounded-3xl border border-pink-50 shadow-sm">
                 <h4 class="font-luxury italic text-2xl mb-4 text-pink-900">New York Trends</h4>
-                <p class="text-[10px] text-gray-400 uppercase tracking-[0.3em] mb-6">Curated specifically for the NYC landscape</p>
                 <div class="flex flex-wrap justify-center gap-4 text-xs italic text-pink-300">
                     <span>#SohoBrunch</span> <span>#ManhattanGala</span> <span>#MetGalaInspo</span> <span>#UpperEastSideLuxury</span> <span>#EtherealVibes</span>
                 </div>
@@ -60,17 +58,17 @@
         <div id="adminView" class="hidden max-w-2xl mx-auto bg-white p-12 rounded-3xl shadow-xl border border-pink-100">
             <h2 class="text-center font-luxury italic text-3xl mb-12 text-[#AD1457]">Inventory Manager</h2>
             <form id="productForm" class="space-y-6">
-                <input type="text" id="name" placeholder="Dress Name" class="w-full p-4 border-b border-gray-200 focus:border-pink-500 outline-none" required>
+                <input type="text" id="name" placeholder="Dress Name" class="w-full p-4 border-b border-gray-200 outline-none" required>
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="price" placeholder="Price ($)" class="w-full p-4 border-b border-gray-200 focus:border-pink-500 outline-none" required>
-                    <input type="text" id="category" placeholder="Category (e.g. Evening Gown)" class="w-full p-4 border-b border-gray-200 focus:border-pink-500 outline-none">
+                    <input type="number" id="price" placeholder="Price ($)" class="w-full p-4 border-b border-gray-200 outline-none" required>
+                    <input type="text" id="category" placeholder="Category" class="w-full p-4 border-b border-gray-200 outline-none">
                 </div>
-                <input type="url" id="img1" placeholder="Main Image URL (Pose 1)" class="w-full p-4 border-b border-gray-200 focus:border-pink-500 outline-none" required>
-                <input type="url" id="img2" placeholder="Second Image URL (Pose 2)" class="w-full p-4 border-b border-gray-200 focus:border-pink-500 outline-none">
-                <input type="url" id="img3" placeholder="Third Image URL (Pose 3)" class="w-full p-4 border-b border-gray-200 focus:border-pink-500 outline-none">
-                <input type="url" id="link" placeholder="Amazon Affiliate Link" class="w-full p-4 border-b border-gray-200 focus:border-pink-500 outline-none" required>
-                <textarea id="desc" placeholder="Dress Description & Material Details" class="w-full p-4 border-b border-gray-200 focus:border-pink-500 outline-none h-32"></textarea>
-                <button type="submit" class="w-full py-5 btn-primary rounded-full font-bold uppercase tracking-widest shadow-lg">Upload to Boutique</button>
+                <input type="url" id="img1" placeholder="Main Image URL" class="w-full p-4 border-b border-gray-200 outline-none" required>
+                <input type="url" id="img2" placeholder="Second Image URL" class="w-full p-4 border-b border-gray-200 outline-none">
+                <input type="url" id="img3" placeholder="Third Image URL" class="w-full p-4 border-b border-gray-200 outline-none">
+                <input type="url" id="link" placeholder="Amazon Affiliate Link" class="w-full p-4 border-b border-gray-200 outline-none" required>
+                <textarea id="desc" placeholder="Dress Description" class="w-full p-4 border-b border-gray-200 outline-none h-32"></textarea>
+                <button type="submit" class="w-full py-5 btn-primary rounded-full font-bold uppercase tracking-widest">Upload to Boutique</button>
             </form>
         </div>
 
@@ -78,17 +76,17 @@
     </main>
 
     <footer class="mt-40 text-center border-t border-pink-100 pt-20 pb-20">
-        <h4 class="font-luxury italic text-4xl mb-6 text-pink-900 italic">Follow the Journey</h4>
+        <h4 class="font-luxury italic text-4xl mb-6 text-pink-900">Follow the Journey</h4>
         <div class="flex justify-center gap-10">
-            <a href="https://www.tiktok.com/@modaura.pk" target="_blank" class="text-[10px] tracking-[4px] uppercase hover:text-pink-500 transition">TikTok</a>
-            <a href="https://www.pinterest.com/Modaura_Official/" target="_blank" class="text-[10px] tracking-[4px] uppercase hover:text-pink-500 transition">Pinterest</a>
+            <a href="https://www.tiktok.com/@modaura.pk" target="_blank" class="text-[10px] tracking-[4px] uppercase hover:text-pink-500">TikTok</a>
+            <a href="https://www.pinterest.com/Modaura_Official/" target="_blank" class="text-[10px] tracking-[4px] uppercase hover:text-pink-500">Pinterest</a>
         </div>
     </footer>
 
     <script>
-        // Use your actual Upstash URL and Token here
-        const UPSTASH_URL = "YOUR_UPSTASH_REDIS_REST_URL";
-        const UPSTASH_TOKEN = "YOUR_UPSTASH_REDIS_REST_TOKEN";
+        // PASTE YOUR UPSTASH DETAILS HERE
+        const UPSTASH_URL = "YOUR_UPSTASH_URL";
+        const UPSTASH_TOKEN = "YOUR_UPSTASH_TOKEN";
 
         async function getProducts() {
             try {
@@ -111,10 +109,16 @@
             location.reload();
         }
 
+        // Updated Password Protection
         function toggleAdmin() {
-            document.getElementById('homeView').classList.add('hidden');
-            document.getElementById('detailsView').classList.add('hidden');
-            document.getElementById('adminView').classList.remove('hidden');
+            const pass = prompt("Enter Studio Password:");
+            if (pass === "rafay1259") {
+                document.getElementById('homeView').classList.add('hidden');
+                document.getElementById('detailsView').classList.add('hidden');
+                document.getElementById('adminView').classList.remove('hidden');
+            } else {
+                alert("Incorrect Password!");
+            }
         }
 
         function goHome() {
@@ -126,40 +130,32 @@
         function showProductDetails(product) {
             const homeView = document.getElementById('homeView');
             const detailsView = document.getElementById('detailsView');
-            
             homeView.classList.add('hidden');
             detailsView.classList.remove('hidden');
 
             detailsView.innerHTML = `
-                <button onclick="goHome()" class="mb-12 text-pink-400 font-bold uppercase text-xs tracking-widest">← Back to Trends</button>
+                <button onclick="goHome()" class="mb-12 text-pink-400 font-bold uppercase text-xs tracking-widest">← Back</button>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div>
                         <img src="${product.image}" id="mainDisplayImg" class="w-full rounded-3xl shadow-2xl mb-6 aspect-[3/4] object-cover">
                         <div class="flex gap-4 overflow-x-auto">
                             <img src="${product.image}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-24 h-32 object-cover rounded-xl cursor-pointer border-2 border-pink-200">
-                            ${product.image2 ? `<img src="${product.image2}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-24 h-32 object-cover rounded-xl cursor-pointer hover:border-pink-400 border border-gray-100">` : ''}
-                            ${product.image3 ? `<img src="${product.image3}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-24 h-32 object-cover rounded-xl cursor-pointer hover:border-pink-400 border border-gray-100">` : ''}
+                            ${product.image2 ? `<img src="${product.image2}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-24 h-32 object-cover rounded-xl cursor-pointer border hover:border-pink-400">` : ''}
+                            ${product.image3 ? `<img src="${product.image3}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-24 h-32 object-cover rounded-xl cursor-pointer border hover:border-pink-400">` : ''}
                         </div>
                     </div>
                     <div class="flex flex-col justify-center">
-                        <span class="text-xs uppercase tracking-[0.3em] text-pink-300 mb-4">${product.category || 'Luxury Evening'}</span>
-                        <h1 class="text-6xl font-luxury italic mb-6">${product.name}</h1>
+                        <span class="text-xs uppercase tracking-[0.3em] text-pink-300 mb-4">${product.category || 'Luxury'}</span>
+                        <h1 class="text-5xl font-luxury italic mb-6">${product.name}</h1>
                         <p class="text-3xl font-light mb-8 text-pink-600">$${product.price}</p>
-                        
                         <div class="mb-10">
-                            <h3 class="text-xs font-bold uppercase tracking-widest mb-4">Select Size (US)</h3>
+                            <h3 class="text-xs font-bold uppercase mb-4">Select Size (US)</h3>
                             <div class="flex gap-4">
-                                ${['S', 'M', 'L', 'XL'].map(size => `<button class="size-btn w-12 h-12 border border-gray-200 rounded-full font-bold text-xs transition-all">${size}</button>`).join('')}
+                                ${['S', 'M', 'L', 'XL'].map(size => `<button class="size-btn w-12 h-12 border border-gray-200 rounded-full font-bold text-xs">${size}</button>`).join('')}
                             </div>
                         </div>
-
-                        <p class="text-gray-500 leading-relaxed mb-10 italic font-light">"${product.description || 'A masterpiece of modern design, tailored for the elite Manhattan lifestyle.'}"</p>
-                        
+                        <p class="text-gray-500 leading-relaxed mb-10 italic">${product.description || ''}</p>
                         <a href="${product.link}" target="_blank" class="btn-primary text-center py-5 rounded-full font-bold shadow-2xl tracking-widest uppercase text-sm">Buy on Amazon</a>
-                        <div class="mt-6 flex items-center justify-center gap-2 text-[10px] text-gray-400 uppercase tracking-widest">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"></path></svg>
-                            Secure Checkout via Amazon
-                        </div>
                     </div>
                 </div>
             `;
@@ -185,17 +181,15 @@
             const grid = document.getElementById('productGrid');
             grid.innerHTML = products.map(p => `
                 <div class="product-card p-4 cursor-pointer" onclick='showProductDetails(${JSON.stringify(p)})'>
-                    <img src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6 shadow-sm">
+                    <img src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6">
                     <div class="text-center px-4">
-                        <span class="text-[8px] uppercase tracking-widest text-pink-300 mb-2 block">${p.category || 'Luxury'}</span>
                         <h3 class="font-luxury italic text-xl mb-2">${p.name}</h3>
                         <p class="text-pink-500 font-bold">$${p.price}</p>
                     </div>
                 </div>
             `).join('');
         }
-
         init();
     </script>
 </body>
-                    </html>
+    </html>
