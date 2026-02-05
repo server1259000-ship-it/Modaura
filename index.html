@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modaura | New York Luxury Affiliate</title>
+    <title>Modaura | New York Luxury</title>
     
     <meta name="p:domain_verify" content="8f77429b5d097004d2a19de3d10f52ba"/>
 
@@ -64,11 +64,11 @@
         <div id="adminView" class="hidden max-w-2xl mx-auto">
             <h2 class="text-4xl font-luxury italic mb-10 text-center text-pink-900">The Studio</h2>
             <form id="productForm" class="space-y-6 bg-white p-10 rounded-3xl border border-pink-100 shadow-sm">
-                <input type="text" id="name" placeholder="Item Name" class="w-full p-4 border-b border-pink-100 outline-none" required>
+                <input type="text" id="name" placeholder="Dress Name" class="w-full p-4 border-b border-pink-100 outline-none" required>
                 <input type="number" id="price" placeholder="Price ($)" class="w-full p-4 border-b border-pink-100 outline-none" required>
                 <input type="url" id="image" placeholder="Image URL (Direct Link)" class="w-full p-4 border-b border-pink-100 outline-none" required>
                 <input type="url" id="amazon" placeholder="Amazon Affiliate Link" class="w-full p-4 border-b border-pink-100 outline-none">
-                <textarea id="desc" placeholder="Short Description for Pinterest" class="w-full p-4 border-b border-pink-100 outline-none h-32"></textarea>
+                <textarea id="desc" placeholder="Short Description" class="w-full p-4 border-b border-pink-100 outline-none h-32"></textarea>
                 <button type="submit" class="w-full primary-btn py-4">Publish Piece</button>
             </form>
         </div>
@@ -77,8 +77,8 @@
     <script>
         const PASS = "rafay1259";
         const initialProducts = [
-            { id: 1, name: "MIDNIGHT VELVET GALA DRESS", price: 145, image: "https://images.pexels.com/photos/1755428/pexels-photo-1755428.jpeg", amazon: "#", desc: "Classic New York elegance." },
-            { id: 2, name: "BOHO CHIC FLORAL MAXI", price: 65, image: "https://images.pexels.com/photos/11103004/pexels-photo-11103004.jpeg", amazon: "#", desc: "Perfect for a summer brunch." }
+            { id: 1, name: "MIDNIGHT VELVET GALA DRESS", price: 145, image: "https://images.pexels.com/photos/1755428/pexels-photo-1755428.jpeg", amazon: "#", desc: "A timeless masterpiece." },
+            { id: 2, name: "BOHO CHIC FLORAL MAXI", price: 65, image: "https://images.pexels.com/photos/11103004/pexels-photo-11103004.jpeg", amazon: "#", desc: "Effortless summer style." }
         ];
 
         let products = JSON.parse(localStorage.getItem('modaura_affiliate_data')) || initialProducts;
@@ -87,8 +87,8 @@
             const grid = document.getElementById('productGrid');
             grid.innerHTML = products.map(p => `
                 <div class="product-card group" onclick="showProduct(${p.id})">
-                    <div class="aspect-[3/4] overflow-hidden">
-                        <img src="${p.image}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    <div class="aspect-[3/4] overflow-hidden bg-white">
+                        <img src="${p.image}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400x600?text=Check+URL'">
                     </div>
                     <div class="p-8 text-center">
                         <h3 class="font-luxury italic text-[11px] tracking-widest text-gray-500 mb-2 uppercase">${p.name}</h3>
@@ -143,4 +143,4 @@
         renderGrid();
     </script>
 </body>
-    </html>
+                    </html>
