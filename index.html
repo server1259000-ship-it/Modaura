@@ -73,14 +73,12 @@
                 if (!data.result) return [];
                 
                 let products = [];
-                // Agar Upstash Array bhej raha hai [key, val, key, val]
+                // Hybrid Logic: Dono Array aur Object ko handle karega
                 if (Array.isArray(data.result)) {
                     for (let i = 1; i < data.result.length; i += 2) {
                         try { products.push(JSON.parse(data.result[i])); } catch(e) {}
                     }
-                } 
-                // Agar Upstash Object bhej raha hai {id: data}
-                else {
+                } else {
                     products = Object.values(data.result).map(p => {
                         try { return typeof p === 'string' ? JSON.parse(p) : p; }
                         catch(e) { return null; }
@@ -174,4 +172,4 @@
         init();
     </script>
 </body>
-</html>
+    </html>
