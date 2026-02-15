@@ -62,18 +62,17 @@
     <script>
         const UPSTASH_URL = "https://humorous-walrus-45015.upstash.io";
         const UPSTASH_TOKEN = "Aa_XAAIncDJkZDNmYTRkZjY3YTg0YWM4OTYzMWYzYWIxNTE4ZTJlYnAyNDUwMTU";
+        const DB_KEY = "boutique_v2"; // Nayi key taake fresh start ho
 
         async function getProducts() {
             try {
-                const response = await fetch(`${UPSTASH_URL}/hgetall/products`, {
+                const response = await fetch(`${UPSTASH_URL}/hgetall/${DB_KEY}`, {
                     headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
                 });
                 const data = await response.json();
-                
                 if (!data.result) return [];
                 
                 let products = [];
-                // Hybrid Logic: Dono Array aur Object ko handle karega
                 if (Array.isArray(data.result)) {
                     for (let i = 1; i < data.result.length; i += 2) {
                         try { products.push(JSON.parse(data.result[i])); } catch(e) {}
@@ -89,13 +88,12 @@
         }
 
         async function saveProduct(product) {
-            const id = Date.now().toString();
+            const id = "p_" + Date.now();
             product.id = id;
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "Uploading...";
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerText = "Uploading...";
 
-            await fetch(`${UPSTASH_URL}/hset/products`, {
+            await fetch(`${UPSTASH_URL}/hset/${DB_KEY}`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
                 body: JSON.stringify([id, JSON.stringify(product)])
@@ -120,7 +118,7 @@
             }
             grid.innerHTML = products.map(p => `
                 <div class="product-card p-4" onclick='showProductDetails(${JSON.stringify(p)})'>
-                    <img loading="lazy" src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6 shadow-sm">
+                    <img loading="lazy" src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6 shadow-sm border border-pink-50">
                     <div class="px-4 pb-4">
                         <span class="text-[8px] uppercase tracking-widest text-pink-300 mb-2 block font-bold italic">${p.category || 'Luxury'}</span>
                         <h3 class="font-luxury italic text-xl mb-2 text-gray-700">${p.name}</h3>
@@ -172,4 +170,4 @@
         init();
     </script>
 </body>
-    </html>
+                    </html>
