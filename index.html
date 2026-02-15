@@ -69,11 +69,22 @@
                     headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
                 });
                 const data = await response.json();
-                if (!data.result || data.result.length === 0) return [];
                 
-                const products = [];
-                for (let i = 1; i < data.result.length; i += 2) {
-                    try { products.push(JSON.parse(data.result[i])); } catch(e) {}
+                if (!data.result) return [];
+                
+                let products = [];
+                // Agar Upstash Array bhej raha hai [key, val, key, val]
+                if (Array.isArray(data.result)) {
+                    for (let i = 1; i < data.result.length; i += 2) {
+                        try { products.push(JSON.parse(data.result[i])); } catch(e) {}
+                    }
+                } 
+                // Agar Upstash Object bhej raha hai {id: data}
+                else {
+                    products = Object.values(data.result).map(p => {
+                        try { return typeof p === 'string' ? JSON.parse(p) : p; }
+                        catch(e) { return null; }
+                    }).filter(p => p !== null);
                 }
                 return products;
             } catch (e) { return []; }
@@ -86,7 +97,6 @@
             btn.disabled = true;
             btn.innerText = "Uploading...";
 
-            // FIXED: Upstash HSET array format
             await fetch(`${UPSTASH_URL}/hset/products`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
@@ -112,7 +122,7 @@
             }
             grid.innerHTML = products.map(p => `
                 <div class="product-card p-4" onclick='showProductDetails(${JSON.stringify(p)})'>
-                    <img loading="lazy" src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6 shadow-sm border border-pink-50">
+                    <img loading="lazy" src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6 shadow-sm">
                     <div class="px-4 pb-4">
                         <span class="text-[8px] uppercase tracking-widest text-pink-300 mb-2 block font-bold italic">${p.category || 'Luxury'}</span>
                         <h3 class="font-luxury italic text-xl mb-2 text-gray-700">${p.name}</h3>
@@ -164,4 +174,4 @@
         init();
     </script>
 </body>
-                    </html>
+</html>
