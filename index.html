@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modaura | New York Luxury Affiliate</title>
+    <title>Modaura | Luxury Fashion Boutique</title>
+    
+    <meta name="description" content="Modaura - Luxury fashion boutique showcasing curated elegant outfits.">
+    <meta name="robots" content="index, follow">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; background: #FFF5F7; color: #2D2D2D; overflow-x: hidden; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
-        .product-card { background: white; border-radius: 15px; transition: all 0.4s ease; border: 1px solid rgba(255,192,203,0.3); }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(233,30,99,0.1); }
-        .nav { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid #FCE4EC; }
-        .btn-primary { background: #AD1457; color: white; transition: 0.3s; cursor: pointer; border: none; }
+        .product-card { background: white; border-radius: 18px; transition: all 0.35s ease; border: 1px solid rgba(255,192,203,0.2); }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(233,30,99,0.12); }
+        .nav { background: rgba(255,255,255,0.9); backdrop-filter: blur(14px); border-bottom: 1px solid #FCE4EC; }
+        .btn-primary { background: #AD1457; color: white; transition: 0.25s; cursor: pointer; border: none; }
         .btn-primary:hover { background: #880E4F; transform: translateY(-2px); }
-        .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
-        .size-btn { transition: 0.2s; border: 1px solid #eee; cursor: pointer; }
-        .size-btn:hover { border-color: #AD1457; color: #AD1457; }
-        .size-btn:focus { background: #AD1457; color: white; outline: none; }
         .hidden { display: none; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
     </style>
@@ -26,22 +27,21 @@
 <body>
 
     <nav class="nav sticky top-0 z-50 p-4 md:p-6 flex justify-between items-center">
-        <h1 onclick="goHome()" class="text-xl md:text-2xl font-luxury italic tracking-widest text-[#AD1457] cursor-pointer">MODAURA</h1>
+        <h1 onclick="window.location.reload()" class="text-xl md:text-2xl font-luxury italic tracking-widest text-[#AD1457] cursor-pointer">MODAURA</h1>
         <div class="flex gap-4 md:gap-8 items-center">
-            <button onclick="toggleAdmin()" class="text-pink-400 text-[10px] md:text-sm font-bold uppercase tracking-widest hover:text-pink-600 transition">Studio</button>
-            <button onclick="goHome()" class="border-b-2 border-pink-500 text-pink-700 text-[10px] md:text-sm font-bold uppercase">Archive</button>
+            <button onclick="toggleAdmin()" class="text-pink-400 text-[10px] md:text-sm font-bold uppercase tracking-widest">Studio</button>
+            <button onclick="window.location.reload()" class="border-b-2 border-pink-500 text-pink-700 text-[10px] md:text-sm font-bold uppercase">Archive</button>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-8 md:py-12">
         <div id="homeView">
             <header class="text-center mb-16 md:mb-24">
-                <span class="text-[8px] md:text-[9px] tracking-[0.8em] text-pink-400 uppercase mb-4 block font-bold italic">EST. 2026 • NEW YORK</span>
+                <span class="text-[8px] md:text-[9px] tracking-[0.8em] text-pink-400 uppercase mb-4 block font-bold italic">EST. 2026 • MODAURA</span>
                 <h2 class="text-4xl md:text-7xl font-luxury italic mb-4 text-gray-800">Vibrant Elegance</h2>
                 <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-[0.4em] font-light italic">Defining the Modern Silhouette</p>
             </header>
-            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-24 text-center">
-                </div>
+            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-24 text-center"></div>
         </div>
 
         <div id="adminView" class="hidden max-w-2xl mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-pink-100">
@@ -68,33 +68,33 @@
         const UPSTASH_URL = "https://humorous-walrus-45015.upstash.io";
         const UPSTASH_TOKEN = "Aa_XAAIncDJkZDNmYTRkZjY3YTg0YWM4OTYzMWYzYWIxNTE4ZTJlYnAyNDUwMTU";
 
-        // Recheck 1: Improved Fetching Logic
         async function getProducts() {
             try {
                 const response = await fetch(`${UPSTASH_URL}/hgetall/products`, {
                     headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
                 });
                 const data = await response.json();
-                if (!data.result || Object.keys(data.result).length === 0) return [];
-                return Object.values(data.result).map(p => {
-                    try { return JSON.parse(p); } catch(e) { return null; }
-                }).filter(p => p !== null);
+                if (!data.result || data.result.length === 0) return [];
+                
+                // FIXED Upstash Parsing (SAFE logic)
+                const products = [];
+                for (let i = 1; i < data.result.length; i += 2) {
+                    try { products.push(JSON.parse(data.result[i])); } catch(e) {}
+                }
+                return products;
             } catch (e) { return []; }
         }
 
-        // Recheck 2: FIXED Upstash Path (Crucial Fix)
         async function saveProduct(product) {
             const id = Date.now().toString();
             product.id = id;
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "Uploading...";
-            
-            // Fix: Changed path to save correctly for hgetall
-            await fetch(`${UPSTASH_URL}/hset/products/${id}`, {
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerText = "Uploading...";
+
+            await fetch(`${UPSTASH_URL}/hset/products`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
-                body: JSON.stringify(JSON.stringify(product))
+                body: JSON.stringify([id, JSON.stringify(product)])
             });
             window.location.reload();
         }
@@ -107,11 +107,6 @@
             }
         }
 
-        function goHome() { 
-            window.location.reload(); 
-        }
-
-        // Recheck 3: Grid Display logic
         async function init() {
             const products = await getProducts();
             const grid = document.getElementById('productGrid');
@@ -121,7 +116,7 @@
             }
             grid.innerHTML = products.map(p => `
                 <div class="product-card p-4 cursor-pointer" onclick='showProductDetails(${JSON.stringify(p)})'>
-                    <img src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6 shadow-sm">
+                    <img loading="lazy" src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6 shadow-sm border border-pink-50">
                     <div class="px-4 pb-4">
                         <span class="text-[8px] uppercase tracking-widest text-pink-300 mb-2 block font-bold italic">${p.category || 'Luxury'}</span>
                         <h3 class="font-luxury italic text-xl mb-2 text-gray-700">${p.name}</h3>
@@ -131,13 +126,12 @@
             `).join('');
         }
 
-        // Recheck 4: Detail View & Gallery logic
         function showProductDetails(product) {
             document.getElementById('homeView').classList.add('hidden');
             const dv = document.getElementById('detailsView');
             dv.classList.remove('hidden');
             dv.innerHTML = `
-                <button onclick="goHome()" class="mb-10 text-pink-400 font-bold uppercase text-xs tracking-widest">← Back</button>
+                <button onclick="window.location.reload()" class="mb-10 text-pink-400 font-bold uppercase text-xs tracking-widest">← Back</button>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
                     <div>
                         <img src="${product.image}" id="mainDisplayImg" class="w-full rounded-3xl shadow-2xl mb-6 aspect-[3/4] object-cover border border-pink-50">
@@ -151,18 +145,13 @@
                         <span class="text-xs uppercase tracking-[0.3em] text-pink-300 mb-4 font-bold italic">${product.category || 'Luxury Selection'}</span>
                         <h1 class="text-4xl md:text-6xl font-luxury italic mb-6 text-gray-800">${product.name}</h1>
                         <p class="text-3xl mb-8 text-pink-600 font-bold">$${product.price}</p>
-                        <div class="mb-10">
-                            <h3 class="text-[10px] font-bold uppercase mb-4 tracking-widest text-gray-400 italic">Select Size (US)</h3>
-                            <div class="flex gap-4">${['S', 'M', 'L', 'XL'].map(s => `<button class="size-btn w-10 h-10 md:w-12 md:h-12 rounded-full font-bold text-[10px]">${s}</button>`).join('')}</div>
-                        </div>
-                        <p class="text-gray-500 mb-10 italic font-light leading-relaxed">"${product.description || 'This piece defines Manhattan elegance.'}"</p>
+                        <p class="text-gray-500 mb-10 italic font-light leading-relaxed">"${product.description || 'Modern silhouette.'}"</p>
                         <a href="${product.link}" target="_blank" class="btn-primary text-center py-5 rounded-full font-bold uppercase tracking-widest text-sm shadow-xl">Buy on Amazon</a>
                     </div>
                 </div>`;
             window.scrollTo(0,0);
         }
 
-        // Recheck 5: Form Submission logic
         document.getElementById('productForm').onsubmit = async (e) => {
             e.preventDefault();
             await saveProduct({
@@ -179,4 +168,4 @@
         init();
     </script>
 </body>
-                        </html>
+    </html>
