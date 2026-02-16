@@ -8,9 +8,12 @@ const redis = new Redis({
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
+      // Frontend se aane wala data
       const { name, price, image, link, desc, id } = req.body;
-      // Data ko list mein save kar rahe hain
+      
+      // Sab cheezon ko ek saath JSON bana kar Redis ki 'dresses' list mein daalna
       await redis.lpush('dresses', JSON.stringify({ name, price, image, link, desc, id }));
+      
       return res.status(200).json({ message: 'Saved successfully' });
     } catch (error) {
       return res.status(500).json({ error: error.message });
