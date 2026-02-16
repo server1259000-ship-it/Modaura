@@ -3,121 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modaura | New York • Paris</title>
+    <title>Modaura | Luxury New York</title>
     <meta name="p:domain_verify" content="8f77429b5d097004d2a19de3d10f52ba"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #FFF; color: #111; }
+        body { font-family: 'Inter', sans-serif; background: #FFF; color: #111; scroll-behavior: smooth; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
-        .amazon-btn { background: #111; color: white; border-radius: 2px; transition: 0.3s; cursor: pointer; }
-        .amazon-btn:hover { background: #333; letter-spacing: 1px; }
+        .amazon-btn { background: #111; color: white; border-radius: 0px; transition: 0.4s; cursor: pointer; border: 1px solid #111; }
+        .amazon-btn:hover { background: transparent; color: #111; }
         .hidden { display: none; }
-        .nav-link { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: #999; }
+        .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: #999; transition: 0.3s; }
         .nav-link:hover { color: #AD1457; }
+        .product-card { transition: transform 0.5s ease; }
+        .product-card:hover { transform: translateY(-10px); }
     </style>
 </head>
 <body>
 
-    <nav class="p-6 md:p-10 flex justify-between items-center bg-white sticky top-0 z-50 border-b border-gray-50">
-        <div onclick="goHome()" class="cursor-pointer">
-            <h1 class="text-xl md:text-2xl font-luxury italic tracking-tighter text-[#AD1457]">MODAURA</h1>
-            <p class="text-[7px] tracking-[0.4em] text-gray-400 -mt-1">NEW YORK • PARIS</p>
+    <nav class="p-8 md:p-12 flex justify-between items-center bg-white sticky top-0 z-50 border-b border-gray-50">
+        <div onclick="goHome()" class="cursor-pointer group">
+            <h1 class="text-2xl md:text-3xl font-luxury italic tracking-tighter text-[#AD1457]">MODAURA</h1>
+            <p class="text-[8px] tracking-[0.5em] text-gray-400 -mt-1 font-bold">NEW YORK • PARIS</p>
         </div>
         
-        <div class="flex gap-8 items-center">
+        <div class="flex gap-10 items-center">
             <button onclick="toggleAdmin()" class="nav-link">Studio</button>
-            <button onclick="goHome()" class="nav-link text-pink-700">Gallery</button>
+            <button onclick="goHome()" class="nav-link text-black border-b border-black">Boutique</button>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 py-12">
+    <main class="max-w-7xl mx-auto px-6 py-16">
         
-        <div id="adminPanel" class="hidden max-w-lg mx-auto mb-20 p-10 bg-gray-50 rounded-sm border border-gray-100">
-            <h3 class="font-luxury italic text-2xl mb-8">Inventory Manager</h3>
-            <div class="space-y-4">
-                <input type="text" id="dressName" placeholder="Product Title" class="w-full p-4 text-xs border-none outline-none">
-                <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-4 text-xs border-none outline-none">
-                <input type="text" id="dressCategory" placeholder="Category" class="w-full p-4 text-xs border-none outline-none">
-                <input type="text" id="dressImage1" placeholder="Main Image URL" class="w-full p-4 text-xs border-none outline-none">
-                <input type="text" id="dressImage2" placeholder="Image 2 URL" class="w-full p-4 text-xs border-none outline-none">
-                <input type="text" id="dressImage3" placeholder="Image 3 URL" class="w-full p-4 text-xs border-none outline-none">
-                <input type="text" id="amazonLink" placeholder="Amazon Affiliate Link" class="w-full p-4 text-xs border-none outline-none">
-                <textarea id="dressDesc" placeholder="Product Details (comma separated)..." class="w-full p-4 text-xs border-none outline-none h-24"></textarea>
-                <button onclick="saveDress()" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-widest">Publish Piece</button>
+        <div id="adminPanel" class="hidden max-w-xl mx-auto mb-32 p-12 bg-gray-50 border border-gray-100 shadow-sm">
+            <h3 class="font-luxury italic text-3xl mb-10 text-center text-gray-800">Inventory Studio</h3>
+            <div class="space-y-5">
+                <input type="text" id="dressName" placeholder="Product Title" class="w-full p-5 text-sm bg-white border-none outline-none">
+                <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-5 text-sm bg-white border-none outline-none">
+                <input type="text" id="dressCategory" placeholder="Category (e.g. Evening)" class="w-full p-5 text-sm bg-white border-none outline-none">
+                <input type="text" id="dressImage1" placeholder="Main Image URL" class="w-full p-5 text-sm bg-white border-none outline-none">
+                <input type="text" id="dressImage2" placeholder="Detail Image 2" class="w-full p-5 text-sm bg-white border-none outline-none">
+                <input type="text" id="dressImage3" placeholder="Detail Image 3" class="w-full p-5 text-sm bg-white border-none outline-none">
+                <input type="text" id="amazonLink" placeholder="Amazon Affiliate Link" class="w-full p-5 text-sm bg-white border-none outline-none">
+                <textarea id="dressDesc" placeholder="Bullets (separate with commas)..." class="w-full p-5 text-sm bg-white border-none outline-none h-24"></textarea>
+                <button onclick="saveDress()" id="saveBtn" class="w-full amazon-btn py-5 text-xs font-bold uppercase tracking-[4px]">List Masterpiece</button>
             </div>
         </div>
 
         <div id="homeView">
-            <div class="text-center mb-24">
-                <h2 class="text-5xl md:text-7xl font-luxury italic mb-4">Vibrant Elegance</h2>
-                <p class="text-[9px] tracking-[0.5em] text-gray-400 uppercase font-light">Defining the Modern Silhouette</p>
+            <div class="text-center mb-32">
+                <span class="text-[9px] tracking-[1em] text-pink-300 uppercase mb-6 block font-bold">Spring Summer 2026</span>
+                <h2 class="text-6xl md:text-8xl font-luxury italic mb-8">Vibrant Elegance</h2>
+                <div class="w-24 h-[1px] bg-gray-200 mx-auto mb-8"></div>
+                <p class="text-[10px] tracking-[0.6em] text-gray-400 uppercase font-light">The Definitive Modern Silhouette</p>
             </div>
-            <div id="productGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-12"></div>
+            
+            <div id="productGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+                </div>
         </div>
 
         <div id="detailView" class="hidden">
-            <div class="flex flex-col lg:flex-row gap-16">
-                <div class="w-full lg:w-3/5 flex gap-4">
-                    <div class="flex flex-col gap-3">
-                        <img id="thumb1" onclick="swapImg(this.src)" class="w-16 h-20 object-cover cursor-pointer hover:opacity-50 transition border">
-                        <img id="thumb2" onclick="swapImg(this.src)" class="w-16 h-20 object-cover cursor-pointer hover:opacity-50 transition border">
-                        <img id="thumb3" onclick="swapImg(this.src)" class="w-16 h-20 object-cover cursor-pointer hover:opacity-50 transition border">
+            <div class="flex flex-col lg:flex-row gap-24">
+                <div class="w-full lg:w-3/5 flex gap-6">
+                    <div class="flex flex-col gap-4">
+                        <img id="thumb1" onclick="swapImg(this.src)" class="w-20 h-28 object-cover cursor-pointer hover:border-black border border-transparent transition">
+                        <img id="thumb2" onclick="swapImg(this.src)" class="w-20 h-28 object-cover cursor-pointer hover:border-black border border-transparent transition">
+                        <img id="thumb3" onclick="swapImg(this.src)" class="w-20 h-28 object-cover cursor-pointer hover:border-black border border-transparent transition">
                     </div>
-                    <img id="mainDetailImg" src="" class="flex-1 object-cover aspect-[3/4] shadow-sm">
+                    <img id="mainDetailImg" src="" class="flex-1 object-cover aspect-[3/4] shadow-2xl">
                 </div>
-                <div class="w-full lg:w-2/5 pt-10">
-                    <p id="detailCat" class="text-[9px] tracking-[0.3em] text-pink-600 font-bold mb-4 uppercase"></p>
-                    <h2 id="detailTitle" class="text-4xl font-luxury mb-6"></h2>
-                    <p id="detailPrice" class="text-2xl font-light mb-10 text-gray-900"></p>
-                    <div class="mb-12">
-                        <ul id="detailBullets" class="text-xs text-gray-500 space-y-3 italic leading-relaxed"></ul>
+                <div class="w-full lg:w-2/5 pt-4">
+                    <p id="detailCat" class="text-[10px] tracking-[0.4em] text-pink-600 font-bold mb-6 uppercase"></p>
+                    <h2 id="detailTitle" class="text-5xl font-luxury mb-8 leading-tight"></h2>
+                    <p id="detailPrice" class="text-3xl font-light mb-12 text-gray-900"></p>
+                    <div class="mb-16 border-t border-gray-100 pt-8">
+                        <h4 class="text-[10px] uppercase font-bold tracking-widest mb-6">Product Details</h4>
+                        <ul id="detailBullets" class="text-xs text-gray-500 space-y-4 italic leading-relaxed"></ul>
                     </div>
-                    <a id="detailLink" href="#" target="_blank" class="amazon-btn w-full py-5 text-center block text-[10px] font-bold uppercase tracking-[3px]">Acquire Piece</a>
-                    <button onclick="goHome()" class="mt-10 text-[8px] text-gray-300 uppercase tracking-widest hover:text-black transition">← Return to Collection</button>
+                    <a id="detailLink" href="#" target="_blank" class="amazon-btn w-full py-6 text-center block text-[11px] font-bold uppercase tracking-[4px] shadow-lg">Acquire Now</a>
+                    <button onclick="goHome()" class="mt-12 text-[9px] text-gray-300 uppercase tracking-widest hover:text-black transition flex items-center gap-2">
+                        <span>←</span> Back to Gallery
+                    </button>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="mt-40 py-20 border-t border-gray-50 text-center">
-        <div class="flex justify-center gap-12 mb-10">
-            <a href="https://www.tiktok.com/@modaura.pk" target="_blank" class="text-[9px] font-bold tracking-[0.3em] text-gray-300 hover:text-black">TIKTOK</a>
-            <a href="https://www.pinterest.com/Modaura_Official/" target="_blank" class="text-[9px] font-bold tracking-[0.3em] text-gray-300 hover:text-black">PINTEREST</a>
+    <footer class="mt-60 py-24 border-t border-gray-50 text-center">
+        <div class="flex justify-center gap-16 mb-12">
+            <a href="https://www.tiktok.com/@modaura.pk" target="_blank" class="text-[10px] font-bold tracking-[0.4em] text-gray-300 hover:text-black transition">TIKTOK</a>
+            <a href="https://www.pinterest.com/Modaura_Official/" target="_blank" class="text-[10px] font-bold tracking-[0.4em] text-gray-300 hover:text-black transition">PINTEREST</a>
         </div>
-        <p class="text-[8px] text-gray-300 italic max-w-xl mx-auto px-6 mb-4">
+        <p class="text-[9px] text-gray-300 italic max-w-xl mx-auto px-6 mb-6">
             *Disclosure: As an Amazon Associate, Modaura earns from qualifying purchases.
         </p>
-        <p class="text-[8px] tracking-widest text-gray-200 uppercase">© 2026 Modaura Luxury Boutique</p>
+        <p class="text-[9px] tracking-[0.8em] text-gray-200 uppercase">© 2026 MODAURA LUXURY</p>
     </footer>
 
     <script>
         const UPSTASH_URL = "https://humorous-walrus-45015.upstash.io";
         const UPSTASH_TOKEN = "Aa_XAAIncDJkZDNmYTRkZjY3YTg0YWM4OTYzMWYzYWIxNTE4ZTJlYnAyNDUwMTU";
-        const KEYS_TO_CHECK = ["modaura_final_v3", "modaura_final_v2"]; // Preserving multi-key search
+        const KEYS = ["modaura_final_v3", "modaura_final_v2", "modaura_db"]; // Multi-key check
 
         let allProducts = [];
 
-        async function getProducts() {
-            for (let key of KEYS_TO_CHECK) {
+        async function fetchAllData() {
+            let combined = [];
+            for (let k of KEYS) {
                 try {
-                    const response = await fetch(`${UPSTASH_URL}/hgetall/${key}`, {
-                        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
-                    });
-                    const data = await response.json();
-                    if (data.result && data.result.length > 0) {
-                        let products = [];
+                    const res = await fetch(`${UPSTASH_URL}/hgetall/${k}`, { headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }});
+                    const data = await res.json();
+                    if (data.result) {
                         for (let i = 1; i < data.result.length; i += 2) {
-                            products.push(JSON.parse(data.result[i]));
+                            combined.push(JSON.parse(data.result[i]));
                         }
-                        return products;
                     }
                 } catch (e) { console.log("Key skip"); }
             }
-            return [];
+            // Remove duplicates by ID
+            return Array.from(new Map(combined.map(item => [item.id, item])).values());
         }
 
         async function saveDress() {
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.innerText = "PUBLISHING...";
             const data = {
                 name: document.getElementById('dressName').value,
                 price: document.getElementById('dressPrice').value,
@@ -127,7 +136,7 @@
                 desc: document.getElementById('dressDesc').value,
                 id: Date.now()
             };
-            await fetch(`${UPSTASH_URL}/hset/${KEYS_TO_CHECK[0]}`, {
+            await fetch(`${UPSTASH_URL}/hset/${KEYS[0]}`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
                 body: JSON.stringify([data.id, JSON.stringify(data)])
@@ -139,7 +148,7 @@
         function swapImg(src) { if(src) document.getElementById('mainDetailImg').src = src; }
 
         async function init() {
-            allProducts = await getProducts();
+            allProducts = await fetchAllData();
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');
             if (productId) { showDetails(productId); } else { renderGrid(allProducts); }
@@ -148,16 +157,17 @@
         function renderGrid(products) {
             const grid = document.getElementById('productGrid');
             if (products.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center py-20 text-gray-300 italic">Collection is being curated...</p>`;
+                grid.innerHTML = `<p class="col-span-full text-center py-40 text-gray-300 italic tracking-[0.2em] text-[10px]">THE COLLECTION IS CURRENTLY BEING CURATED IN NEW YORK...</p>`;
                 return;
             }
             grid.innerHTML = products.map(item => `
-                <div class="cursor-pointer group" onclick='updateUrlAndShow(${item.id})'>
-                    <div class="aspect-[3/4] mb-6 overflow-hidden bg-gray-50">
-                        <img src="${item.images[0]}" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                <div class="cursor-pointer product-card" onclick='updateUrlAndShow(${item.id})'>
+                    <div class="aspect-[3/4] mb-8 overflow-hidden bg-gray-50 shadow-sm">
+                        <img src="${item.images[0]}" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-[9px] font-bold tracking-widest text-gray-400 mb-2 uppercase">${item.name}</h3>
-                    <p class="font-luxury text-xl">$${item.price}</p>
+                    <p class="text-[10px] font-bold tracking-[0.3em] text-pink-600 mb-3 uppercase italic">${item.category}</p>
+                    <h3 class="text-xs font-bold tracking-widest text-gray-900 mb-2 uppercase">${item.name}</h3>
+                    <p class="font-luxury text-2xl text-gray-800 font-light">$${item.price}</p>
                 </div>
             `).join('');
         }
@@ -178,7 +188,7 @@
             document.getElementById('detailPrice').innerText = `$${p.price}`;
             document.getElementById('detailCat').innerText = p.category;
             document.getElementById('detailLink').href = p.link;
-            document.getElementById('detailBullets').innerHTML = p.desc.split(',').map(b => `<li>• ${b.trim()}</li>`).join('');
+            document.getElementById('detailBullets').innerHTML = p.desc.split(',').map(b => `<li>— ${b.trim()}</li>`).join('');
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('detailView').classList.remove('hidden');
             window.scrollTo(0,0);
@@ -193,4 +203,4 @@
         init();
     </script>
 </body>
-            </html>
+    </html>
