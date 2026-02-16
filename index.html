@@ -3,68 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modaura | Luxury Fashion Boutique</title>
+    <title>Modaura | Luxury Fashion Curation</title>
+
+    <meta name="p:domain_verify" content="8f77429b5d097004d2a19de3d10f52ba"/>
+    <meta property="og:title" content="Modaura Luxury Boutique">
+    <meta property="og:description" content="Discover curated luxury fashion silhouettes.">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background: #FFF5F7; color: #2D2D2D; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: #FFF5F7; color: #2D2D2D; min-height: 100vh; overflow-x: hidden; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
-        .product-card { background: white; border-radius: 18px; transition: 0.35s ease; border: 1px solid rgba(255,192,203,0.2); cursor: pointer; }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(233,30,99,0.12); }
-        .nav { background: rgba(255,255,255,0.9); backdrop-filter: blur(14px); border-bottom: 1px solid #FCE4EC; }
-        .btn-primary { background: #AD1457; color: white; transition: 0.25s; cursor: pointer; border: none; }
-        .btn-primary:hover { background: #880E4F; transform: translateY(-2px); }
+        .product-card { background: white; border-radius: 24px; overflow: hidden; transition: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(255, 182, 193, 0.1); }
+        .product-card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(233, 30, 99, 0.08); }
+        .img-container { aspect-ratio: 3/4; overflow: hidden; background: #fdfdfd; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s ease; }
+        .product-card:hover img { transform: scale(1.08); }
+        nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 192, 203, 0.1); }
+        .primary-btn { background: #AD1457; color: white; letter-spacing: 2px; font-weight: 600; cursor: pointer; transition: 0.4s; }
+        .primary-btn:hover { background: #880E4F; transform: scale(1.02); }
         .hidden { display: none; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .loading-spinner { width: 30px; height: 30px; border: 2px solid #f3f3f3; border-top: 2px solid #AD1457; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <nav class="nav sticky top-0 z-50 p-4 md:p-6 flex justify-between items-center">
-        <h1 onclick="window.location.reload()" class="text-xl md:text-2xl font-luxury italic tracking-widest text-[#AD1457] cursor-pointer">MODAURA</h1>
-        <div class="flex gap-4 md:gap-8 items-center">
-            <button onclick="toggleAdmin()" class="text-pink-400 text-[10px] md:text-sm font-bold uppercase tracking-widest">Studio</button>
-            <button onclick="window.location.reload()" class="border-b-2 border-pink-500 text-pink-700 text-[10px] md:text-sm font-bold uppercase">Archive</button>
+    <nav class="p-5 md:p-6 flex justify-between items-center sticky top-0 z-50">
+        <div onclick="window.location.reload()" class="cursor-pointer">
+            <h1 class="text-2xl font-luxury italic tracking-[0.2em] text-[#AD1457]">MODAURA</h1>
+            <p class="text-[7px] tracking-[0.3em] text-gray-400 uppercase text-center">New York • Paris</p>
+        </div>
+        <div class="flex gap-6 text-[9px] items-center uppercase tracking-widest font-bold">
+            <button onclick="toggleAdmin()" class="text-pink-300 hover:text-pink-500">Studio</button>
+            <button onclick="window.location.reload()" class="bg-pink-50 px-4 py-2 rounded-full text-pink-700">Archive</button>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 py-8 md:py-12">
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div id="adminPanel" class="hidden max-w-xl mx-auto mb-20 p-10 bg-white rounded-[40px] shadow-2xl border border-pink-50">
+            <h3 class="text-center font-luxury italic text-3xl mb-8 text-pink-900">Inventory Studio</h3>
+            <div class="space-y-4">
+                <input type="text" id="dressName" placeholder="Dress Title" class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm">
+                <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm">
+                <input type="text" id="dressImage" placeholder="Image URL (Direct Link)" class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm">
+                <input type="text" id="amazonLink" placeholder="Amazon Affiliate Link" class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm">
+                <textarea id="dressDesc" placeholder="Brief description for the detail page..." class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm h-32"></textarea>
+                <button onclick="saveDress()" id="saveButton" class="primary-btn w-full py-5 rounded-2xl">Publish to Boutique</button>
+            </div>
+        </div>
+
         <div id="homeView">
-            <header class="text-center mb-16 md:mb-24">
-                <span class="text-[8px] md:text-[9px] tracking-[0.8em] text-pink-400 uppercase mb-4 block font-bold italic">EST. 2026 • MODAURA</span>
-                <h2 class="text-4xl md:text-7xl font-luxury italic mb-4 text-gray-800">Vibrant Elegance</h2>
-                <p class="text-[10px] md:text-xs text-gray-400 uppercase tracking-[0.4em] font-light italic">Defining the Modern Silhouette</p>
+            <header class="text-center mb-20">
+                <span class="text-[8px] tracking-[1em] text-pink-400 uppercase mb-4 block font-bold">ESTABLISHED 2026</span>
+                <h2 class="text-5xl md:text-7xl font-luxury italic mb-4">Vibrant Elegance</h2>
+                <p class="text-[10px] text-gray-400 uppercase tracking-[0.5em]">Defining the Modern Silhouette</p>
             </header>
-            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-24 text-center"></div>
-        </div>
-
-        <div id="adminView" class="hidden max-w-2xl mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-pink-100">
-            <h2 class="text-center font-luxury italic text-3xl mb-12 text-[#AD1457]">Inventory Manager</h2>
-            <form id="productForm" class="space-y-6">
-                <input type="text" id="name" placeholder="Dress Name" class="w-full p-4 border-b border-gray-100 outline-none" required>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" step="0.01" id="price" placeholder="Price ($)" class="w-full p-4 border-b border-gray-100 outline-none" required>
-                    <input type="text" id="category" placeholder="Category" class="w-full p-4 border-b border-gray-100 outline-none">
+            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div class="col-span-full flex flex-col items-center py-20">
+                    <div class="loading-spinner"></div>
+                    <p class="text-[10px] mt-4 uppercase tracking-widest text-gray-400">Loading Collection...</p>
                 </div>
-                <input type="url" id="img1" placeholder="Main Image URL" class="w-full p-4 border-b border-gray-100 outline-none" required>
-                <input type="url" id="img2" placeholder="Second Image URL" class="w-full p-4 border-b border-gray-100 outline-none">
-                <input type="url" id="img3" placeholder="Third Image URL" class="w-full p-4 border-b border-gray-100 outline-none">
-                <input type="url" id="link" placeholder="Amazon Affiliate Link" class="w-full p-4 border-b border-gray-100 outline-none" required>
-                <textarea id="desc" placeholder="Brief Description..." class="w-full p-4 border-b border-gray-100 outline-none h-32"></textarea>
-                <button type="submit" id="submitBtn" class="w-full py-5 btn-primary rounded-full font-bold uppercase tracking-widest shadow-lg">Upload to Boutique</button>
-            </form>
+            </div>
         </div>
 
-        <div id="detailsView" class="hidden"></div>
+        <div id="detailView" class="hidden">
+            <div class="flex flex-col lg:flex-row gap-16 items-start">
+                <div class="w-full lg:w-1/2 bg-white rounded-[30px] overflow-hidden shadow-sm">
+                    <img id="mainDetailImg" src="" class="w-full aspect-[3/4] object-cover">
+                </div>
+                <div class="w-full lg:w-1/2 pt-10">
+                    <h2 id="detailTitle" class="text-5xl font-luxury italic mb-6 text-gray-800"></h2>
+                    <p id="detailPrice" class="text-2xl text-pink-600 mb-8"></p>
+                    <p id="detailDesc" class="text-gray-500 leading-relaxed mb-12 text-sm italic border-l border-pink-100 pl-6"></p>
+                    <a id="detailLink" href="#" target="_blank" class="primary-btn py-6 rounded-2xl text-center block text-xs tracking-[4px]">Buy on Amazon</a>
+                    <button onclick="goHome()" class="mt-10 text-[9px] text-gray-400 hover:text-pink-600 uppercase tracking-[4px]">← Back to Gallery</button>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <footer class="mt-40 py-20 border-t border-pink-50 text-center px-6">
+        <p class="text-[8px] text-gray-400 uppercase tracking-[0.3em] mb-4">Modaura Luxury Boutique</p>
+        <div class="max-w-xl mx-auto">
+            <p class="text-[9px] text-gray-400 leading-loose italic">
+                *Disclosure: As an Amazon Associate, Modaura earns from qualifying purchases. This means we may receive a small commission when you click on our curated links, at no extra cost to you.
+            </p>
+        </div>
+    </footer>
 
     <script>
         const UPSTASH_URL = "https://humorous-walrus-45015.upstash.io";
         const UPSTASH_TOKEN = "Aa_XAAIncDJkZDNmYTRkZjY3YTg0YWM4OTYzMWYzYWIxNTE4ZTJlYnAyNDUwMTU";
-        
-        // --- YE KEY CHANGE KARNA ZAROORI THI ---
-        const DB_KEY = "boutique_final"; 
+        const DB_KEY = "modaura_final_v2";
 
         async function getProducts() {
             try {
@@ -73,40 +105,37 @@
                 });
                 const data = await response.json();
                 if (!data.result) return [];
-                
                 let products = [];
-                if (Array.isArray(data.result)) {
-                    for (let i = 1; i < data.result.length; i += 2) {
-                        try { products.push(JSON.parse(data.result[i])); } catch(e) {}
-                    }
-                } else {
-                    products = Object.values(data.result).map(p => {
-                        try { return typeof p === 'string' ? JSON.parse(p) : p; }
-                        catch(e) { return null; }
-                    }).filter(p => p !== null);
+                for (let i = 1; i < data.result.length; i += 2) {
+                    try { products.push(JSON.parse(data.result[i])); } catch(e) {}
                 }
                 return products;
             } catch (e) { return []; }
         }
 
-        async function saveProduct(product) {
-            const id = "p_" + Date.now();
-            product.id = id;
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('submitBtn').innerText = "Uploading...";
-
+        async function saveDress() {
+            const btn = document.getElementById('saveButton');
+            const data = {
+                name: document.getElementById('dressName').value.toUpperCase(),
+                price: document.getElementById('dressPrice').value,
+                image: document.getElementById('dressImage').value,
+                link: document.getElementById('amazonLink').value || "#",
+                desc: document.getElementById('dressDesc').value || "Exquisite detail and modern silhouette.",
+                id: Date.now()
+            };
+            if(!data.name || !data.price || !data.image) return alert("Details required.");
+            btn.innerText = "Publishing...";
             await fetch(`${UPSTASH_URL}/hset/${DB_KEY}`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
-                body: JSON.stringify([id, JSON.stringify(product)])
+                body: JSON.stringify([data.id, JSON.stringify(data)])
             });
             window.location.reload();
         }
 
         function toggleAdmin() {
-            if (prompt("Studio Password:") === "rafay1259") {
-                document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
-                document.getElementById('adminView').classList.remove('hidden');
+            if (prompt("Studio Key:") === "rafay1259") {
+                document.getElementById('adminPanel').classList.remove('hidden');
                 window.scrollTo(0,0);
             }
         }
@@ -115,57 +144,38 @@
             const products = await getProducts();
             const grid = document.getElementById('productGrid');
             if (products.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 italic py-20">No trends curated yet.</p>`;
+                grid.innerHTML = `<p class="col-span-full text-center py-20 text-gray-300 italic">No pieces curated yet.</p>`;
                 return;
             }
-            grid.innerHTML = products.map(p => `
-                <div class="product-card p-4" onclick='showProductDetails(${JSON.stringify(p)})'>
-                    <img loading="lazy" src="${p.image}" class="w-full h-[450px] object-cover rounded-2xl mb-6 shadow-sm">
-                    <div class="px-4 pb-4">
-                        <span class="text-[8px] uppercase tracking-widest text-pink-300 mb-2 block font-bold italic">${p.category || 'Luxury'}</span>
-                        <h3 class="font-luxury italic text-xl mb-2 text-gray-700">${p.name}</h3>
-                        <p class="text-pink-500 font-bold">$${p.price}</p>
+            grid.innerHTML = products.map(item => `
+                <div class="product-card group cursor-pointer" onclick='showDetails(${JSON.stringify(item).replace(/'/g, "&apos;")})'>
+                    <div class="img-container">
+                        <img src="${item.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800'">
+                    </div>
+                    <div class="p-8 text-center">
+                        <h3 class="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 mb-3">${item.name}</h3>
+                        <p class="text-xl font-luxury italic text-pink-600">$${item.price}</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        function showProductDetails(product) {
+        function showDetails(product) {
+            document.getElementById('mainDetailImg').src = product.image;
+            document.getElementById('detailTitle').innerText = product.name;
+            document.getElementById('detailPrice').innerText = `$${product.price}`;
+            document.getElementById('detailDesc').innerText = product.desc;
+            document.getElementById('detailLink').href = product.link;
             document.getElementById('homeView').classList.add('hidden');
-            const dv = document.getElementById('detailsView');
-            dv.classList.remove('hidden');
-            dv.innerHTML = `
-                <button onclick="window.location.reload()" class="mb-10 text-pink-400 font-bold uppercase text-xs tracking-widest">← Back</button>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
-                    <div>
-                        <img src="${product.image}" id="mainDisplayImg" class="w-full rounded-3xl shadow-2xl mb-6 aspect-[3/4] object-cover border border-pink-50">
-                        <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                            <img src="${product.image}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-20 h-28 md:w-24 md:h-32 object-cover rounded-xl cursor-pointer border-2 border-pink-300">
-                        </div>
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <h1 class="text-4xl md:text-6xl font-luxury italic mb-6 text-gray-800">${product.name}</h1>
-                        <p class="text-3xl mb-8 text-pink-600 font-bold">$${product.price}</p>
-                        <a href="${product.link}" target="_blank" class="btn-primary text-center py-5 rounded-full font-bold uppercase tracking-widest text-sm shadow-xl">Buy on Amazon</a>
-                    </div>
-                </div>`;
+            document.getElementById('detailView').classList.remove('hidden');
             window.scrollTo(0,0);
         }
 
-        document.getElementById('productForm').onsubmit = async (e) => {
-            e.preventDefault();
-            await saveProduct({
-                name: document.getElementById('name').value,
-                price: document.getElementById('price').value,
-                image: document.getElementById('img1').value,
-                image2: document.getElementById('img2').value,
-                image3: document.getElementById('img3').value,
-                link: document.getElementById('link').value,
-                category: document.getElementById('category').value,
-                description: document.getElementById('desc').value
-            });
-        };
+        function goHome() {
+            document.getElementById('homeView').classList.remove('hidden');
+            document.getElementById('detailView').classList.add('hidden');
+        }
         init();
     </script>
 </body>
-</html>
+                    </html>
