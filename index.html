@@ -3,100 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modaura | Luxury Fashion Curation</title>
-
+    <title>Modaura | Luxury Fashion Boutique</title>
     <meta name="p:domain_verify" content="8f77429b5d097004d2a19de3d10f52ba"/>
-    <meta property="og:title" content="Modaura Luxury Boutique">
-    <meta property="og:description" content="Discover curated luxury fashion silhouettes.">
-    <meta property="og:type" content="website">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #FFF5F7; color: #2D2D2D; min-height: 100vh; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: #FFF; color: #1A1A1A; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
-        .product-card { background: white; border-radius: 24px; overflow: hidden; transition: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(255, 182, 193, 0.1); }
-        .product-card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(233, 30, 99, 0.08); }
-        .img-container { aspect-ratio: 3/4; overflow: hidden; background: #fdfdfd; }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s ease; }
-        .product-card:hover img { transform: scale(1.08); }
-        nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 192, 203, 0.1); }
-        .primary-btn { background: #AD1457; color: white; letter-spacing: 2px; font-weight: 600; cursor: pointer; transition: 0.4s; }
-        .primary-btn:hover { background: #880E4F; transform: scale(1.02); }
+        .primary-btn { background: #AD1457; color: white; transition: 0.3s; cursor: pointer; }
+        .primary-btn:hover { background: #880E4F; transform: translateY(-2px); }
         .hidden { display: none; }
-        .loading-spinner { width: 30px; height: 30px; border: 2px solid #f3f3f3; border-top: 2px solid #AD1457; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .pin-btn { background: #E60023; color: white; border-radius: 20px; font-size: 10px; padding: 5px 12px; }
     </style>
 </head>
 <body>
 
-    <nav class="p-5 md:p-6 flex justify-between items-center sticky top-0 z-50">
-        <div onclick="window.location.reload()" class="cursor-pointer">
-            <h1 class="text-2xl font-luxury italic tracking-[0.2em] text-[#AD1457]">MODAURA</h1>
-            <p class="text-[7px] tracking-[0.3em] text-gray-400 uppercase text-center">New York • Paris</p>
+    <nav class="p-4 md:p-6 flex justify-between items-center sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div onclick="goHome()" class="cursor-pointer">
+            <h1 class="text-xl md:text-2xl font-luxury italic tracking-tighter text-[#AD1457]">MODAURA</h1>
         </div>
-        <div class="flex gap-6 text-[9px] items-center uppercase tracking-widest font-bold">
-            <button onclick="toggleAdmin()" class="text-pink-300 hover:text-pink-500">Studio</button>
-            <button onclick="window.location.reload()" class="bg-pink-50 px-4 py-2 rounded-full text-pink-700">Archive</button>
+        
+        <div class="hidden md:block flex-1 max-w-xs mx-10">
+            <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search collection..." class="w-full bg-gray-50 border-none rounded-full px-6 py-2 text-xs outline-none">
+        </div>
+
+        <div class="flex gap-4 items-center">
+            <button onclick="toggleAdmin()" class="text-[10px] uppercase font-bold text-gray-400">Studio</button>
+            <button onclick="goHome()" class="text-[10px] uppercase font-bold text-pink-600">Gallery</button>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 py-12">
-        <div id="adminPanel" class="hidden max-w-xl mx-auto mb-20 p-10 bg-white rounded-[40px] shadow-2xl border border-pink-50">
-            <h3 class="text-center font-luxury italic text-3xl mb-8 text-pink-900">Inventory Studio</h3>
-            <div class="space-y-4">
-                <input type="text" id="dressName" placeholder="Dress Title" class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm">
-                <input type="number" id="dressPrice" placeholder="Price ($)" class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm">
-                <input type="text" id="dressImage" placeholder="Image URL (Direct Link)" class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm">
-                <input type="text" id="amazonLink" placeholder="Amazon Affiliate Link" class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm">
-                <textarea id="dressDesc" placeholder="Brief description for the detail page..." class="w-full p-5 bg-pink-50/50 rounded-2xl outline-none text-sm h-32"></textarea>
-                <button onclick="saveDress()" id="saveButton" class="primary-btn w-full py-5 rounded-2xl">Publish to Boutique</button>
+    <main class="max-w-7xl mx-auto px-4 md:px-8 py-8">
+        <div id="adminPanel" class="hidden max-w-2xl mx-auto mb-20 p-8 bg-gray-50 rounded-3xl border border-gray-100">
+            <h3 class="font-luxury italic text-2xl mb-6">Inventory Studio</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" id="dressName" placeholder="Product Name" class="p-4 rounded-xl border-none outline-none text-sm">
+                <input type="number" id="dressPrice" placeholder="Price ($)" class="p-4 rounded-xl border-none outline-none text-sm">
+                <input type="text" id="dressCategory" placeholder="Category (e.g. Gala)" class="p-4 rounded-xl border-none outline-none text-sm">
+                <input type="text" id="dressImage1" placeholder="Main Image URL" class="p-4 rounded-xl border-none outline-none text-sm">
+                <input type="text" id="dressImage2" placeholder="Image 2 URL" class="p-4 rounded-xl border-none outline-none text-sm">
+                <input type="text" id="dressImage3" placeholder="Image 3 URL" class="p-4 rounded-xl border-none outline-none text-sm">
+                <input type="text" id="amazonLink" placeholder="Amazon Affiliate Link" class="col-span-full p-4 rounded-xl border-none outline-none text-sm">
+                <textarea id="dressDesc" placeholder="Description..." class="col-span-full p-4 rounded-xl border-none outline-none text-sm h-32"></textarea>
+                <button onclick="saveDress()" id="saveButton" class="col-span-full primary-btn py-4 rounded-xl font-bold uppercase text-sm">Publish Piece</button>
             </div>
         </div>
 
         <div id="homeView">
-            <header class="text-center mb-20">
-                <span class="text-[8px] tracking-[1em] text-pink-400 uppercase mb-4 block font-bold">ESTABLISHED 2026</span>
-                <h2 class="text-5xl md:text-7xl font-luxury italic mb-4">Vibrant Elegance</h2>
-                <p class="text-[10px] text-gray-400 uppercase tracking-[0.5em]">Defining the Modern Silhouette</p>
-            </header>
-            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                <div class="col-span-full flex flex-col items-center py-20">
-                    <div class="loading-spinner"></div>
-                    <p class="text-[10px] mt-4 uppercase tracking-widest text-gray-400">Loading Collection...</p>
-                </div>
-            </div>
+            <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
         </div>
 
         <div id="detailView" class="hidden">
-            <div class="flex flex-col lg:flex-row gap-16 items-start">
-                <div class="w-full lg:w-1/2 bg-white rounded-[30px] overflow-hidden shadow-sm">
-                    <img id="mainDetailImg" src="" class="w-full aspect-[3/4] object-cover">
+            <div class="flex flex-col lg:flex-row gap-12 mb-20">
+                <div class="w-full lg:w-3/5 flex gap-4">
+                    <div class="flex flex-col gap-3 w-20">
+                        <img id="thumb1" onclick="swapImg(this.src)" class="w-full aspect-square object-cover rounded-lg border-2 border-transparent cursor-pointer">
+                        <img id="thumb2" onclick="swapImg(this.src)" class="w-full aspect-square object-cover rounded-lg border-2 border-transparent cursor-pointer">
+                        <img id="thumb3" onclick="swapImg(this.src)" class="w-full aspect-square object-cover rounded-lg border-2 border-transparent cursor-pointer">
+                    </div>
+                    <div class="flex-1 relative">
+                        <img id="mainDetailImg" src="" class="w-full rounded-2xl shadow-sm object-cover aspect-[3/4]">
+                        <button onclick="pinCurrent()" class="pin-btn absolute top-4 right-4 shadow-lg">Save to Pinterest</button>
+                    </div>
                 </div>
-                <div class="w-full lg:w-1/2 pt-10">
-                    <h2 id="detailTitle" class="text-5xl font-luxury italic mb-6 text-gray-800"></h2>
-                    <p id="detailPrice" class="text-2xl text-pink-600 mb-8"></p>
-                    <p id="detailDesc" class="text-gray-500 leading-relaxed mb-12 text-sm italic border-l border-pink-100 pl-6"></p>
-                    <a id="detailLink" href="#" target="_blank" class="primary-btn py-6 rounded-2xl text-center block text-xs tracking-[4px]">Buy on Amazon</a>
-                    <button onclick="goHome()" class="mt-10 text-[9px] text-gray-400 hover:text-pink-600 uppercase tracking-[4px]">← Back to Gallery</button>
+                <div class="w-full lg:w-2/5">
+                    <p id="detailCat" class="text-pink-600 font-bold text-[10px] tracking-[0.3em] uppercase mb-2"></p>
+                    <h2 id="detailTitle" class="text-4xl font-luxury mb-4 leading-tight"></h2>
+                    <p id="detailPrice" class="text-2xl font-light text-gray-900 mb-8"></p>
+                    <p id="detailDesc" class="text-gray-500 text-sm leading-relaxed mb-10 italic"></p>
+                    <a id="detailLink" href="#" target="_blank" class="primary-btn w-full py-5 rounded-full text-center block font-bold text-xs uppercase tracking-widest shadow-xl">Acquire via Amazon</a>
+                    <button onclick="goHome()" class="mt-8 text-[9px] text-gray-400 hover:text-pink-600 uppercase tracking-widest transition">← Return to Collection</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="mt-40 py-20 border-t border-pink-50 text-center px-6">
-        <p class="text-[8px] text-gray-400 uppercase tracking-[0.3em] mb-4">Modaura Luxury Boutique</p>
-        <div class="max-w-xl mx-auto">
-            <p class="text-[9px] text-gray-400 leading-loose italic">
-                *Disclosure: As an Amazon Associate, Modaura earns from qualifying purchases. This means we may receive a small commission when you click on our curated links, at no extra cost to you.
-            </p>
+    <footer class="mt-40 py-20 bg-gray-50 text-center px-6 border-t">
+        <div class="mb-10">
+            <h4 class="font-luxury italic text-xl mb-4">Join the Inner Circle</h4>
+            <div class="flex max-w-xs mx-auto">
+                <input type="email" placeholder="Email Address" class="bg-white px-6 py-3 rounded-l-full w-full text-xs outline-none">
+                <button class="bg-black text-white px-6 py-3 rounded-r-full text-[10px] uppercase font-bold">Join</button>
+            </div>
         </div>
+        <div class="flex justify-center gap-8 mb-8 text-[10px] uppercase tracking-widest font-bold text-gray-400">
+            <a href="https://www.tiktok.com/@modaura.pk" target="_blank" class="hover:text-black">TikTok</a>
+            <a href="https://www.pinterest.com/Modaura_Official/" target="_blank" class="hover:text-black">Pinterest</a>
+        </div>
+        <p class="text-[9px] text-gray-400 leading-loose italic max-w-2xl mx-auto">
+            *Disclosure: As an Amazon Associate, Modaura earns from qualifying purchases.
+        </p>
     </footer>
 
     <script>
         const UPSTASH_URL = "https://humorous-walrus-45015.upstash.io";
         const UPSTASH_TOKEN = "Aa_XAAIncDJkZDNmYTRkZjY3YTg0YWM4OTYzMWYzYWIxNTE4ZTJlYnAyNDUwMTU";
-        const DB_KEY = "modaura_final_v2";
+        const DB_KEY = "modaura_final_v3";
+
+        let allProducts = [];
 
         async function getProducts() {
             try {
@@ -107,24 +111,22 @@
                 if (!data.result) return [];
                 let products = [];
                 for (let i = 1; i < data.result.length; i += 2) {
-                    try { products.push(JSON.parse(data.result[i])); } catch(e) {}
+                    products.push(JSON.parse(data.result[i]));
                 }
                 return products;
             } catch (e) { return []; }
         }
 
         async function saveDress() {
-            const btn = document.getElementById('saveButton');
             const data = {
-                name: document.getElementById('dressName').value.toUpperCase(),
+                name: document.getElementById('dressName').value,
                 price: document.getElementById('dressPrice').value,
-                image: document.getElementById('dressImage').value,
+                category: document.getElementById('dressCategory').value || "Chic",
+                images: [document.getElementById('dressImage1').value, document.getElementById('dressImage2').value, document.getElementById('dressImage3').value],
                 link: document.getElementById('amazonLink').value || "#",
-                desc: document.getElementById('dressDesc').value || "Exquisite detail and modern silhouette.",
+                desc: document.getElementById('dressDesc').value,
                 id: Date.now()
             };
-            if(!data.name || !data.price || !data.image) return alert("Details required.");
-            btn.innerText = "Publishing...";
             await fetch(`${UPSTASH_URL}/hset/${DB_KEY}`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
@@ -133,48 +135,74 @@
             window.location.reload();
         }
 
-        function toggleAdmin() {
-            if (prompt("Studio Key:") === "rafay1259") {
-                document.getElementById('adminPanel').classList.remove('hidden');
-                window.scrollTo(0,0);
-            }
+        function searchProducts() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term) || p.category.toLowerCase().includes(term));
+            renderGrid(filtered);
         }
 
+        function toggleAdmin() {
+            if (prompt("Studio Key:") === "rafay1259") document.getElementById('adminPanel').classList.toggle('hidden');
+        }
+
+        function swapImg(src) { if(src) document.getElementById('mainDetailImg').src = src; }
+
         async function init() {
-            const products = await getProducts();
+            allProducts = await getProducts();
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            if (productId) { showDetails(productId); } else { renderGrid(allProducts); }
+        }
+
+        function renderGrid(products) {
             const grid = document.getElementById('productGrid');
-            if (products.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center py-20 text-gray-300 italic">No pieces curated yet.</p>`;
-                return;
-            }
             grid.innerHTML = products.map(item => `
-                <div class="product-card group cursor-pointer" onclick='showDetails(${JSON.stringify(item).replace(/'/g, "&apos;")})'>
-                    <div class="img-container">
-                        <img src="${item.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x800'">
+                <div class="cursor-pointer group" onclick='updateUrlAndShow(${item.id})'>
+                    <div class="overflow-hidden rounded-xl bg-gray-50 aspect-[3/4] mb-4">
+                        <img src="${item.images[0]}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                     </div>
-                    <div class="p-8 text-center">
-                        <h3 class="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 mb-3">${item.name}</h3>
-                        <p class="text-xl font-luxury italic text-pink-600">$${item.price}</p>
-                    </div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">${item.name}</h3>
+                    <p class="font-luxury text-lg text-pink-600">$${item.price}</p>
                 </div>
             `).join('');
         }
 
-        function showDetails(product) {
-            document.getElementById('mainDetailImg').src = product.image;
-            document.getElementById('detailTitle').innerText = product.name;
-            document.getElementById('detailPrice').innerText = `$${product.price}`;
-            document.getElementById('detailDesc').innerText = product.desc;
-            document.getElementById('detailLink').href = product.link;
+        function updateUrlAndShow(id) {
+            window.history.pushState({}, '', `?id=${id}`);
+            showDetails(id);
+        }
+
+        function showDetails(id) {
+            const p = allProducts.find(item => item.id == id);
+            if(!p) { renderGrid(allProducts); return; }
+            document.getElementById('mainDetailImg').src = p.images[0];
+            document.getElementById('thumb1').src = p.images[0];
+            document.getElementById('thumb2').src = p.images[1] || p.images[0];
+            document.getElementById('thumb3').src = p.images[2] || p.images[0];
+            document.getElementById('detailTitle').innerText = p.name;
+            document.getElementById('detailCat').innerText = p.category;
+            document.getElementById('detailPrice').innerText = `$${p.price}`;
+            document.getElementById('detailDesc').innerText = p.desc;
+            document.getElementById('detailLink').href = p.link;
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('detailView').classList.remove('hidden');
             window.scrollTo(0,0);
         }
 
         function goHome() {
+            window.history.pushState({}, '', window.location.pathname);
             document.getElementById('homeView').classList.remove('hidden');
             document.getElementById('detailView').classList.add('hidden');
+            renderGrid(allProducts);
         }
+
+        function pinCurrent() {
+            const url = encodeURIComponent(window.location.href);
+            const media = encodeURIComponent(document.getElementById('mainDetailImg').src);
+            const desc = encodeURIComponent(document.getElementById('detailTitle').innerText);
+            window.open(`https://www.pinterest.com/pin/create/button/?url=${url}&media=${media}&description=${desc}`);
+        }
+
         init();
     </script>
 </body>
