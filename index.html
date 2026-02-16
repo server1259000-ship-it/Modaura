@@ -62,7 +62,7 @@
     <script>
         const UPSTASH_URL = "https://humorous-walrus-45015.upstash.io";
         const UPSTASH_TOKEN = "Aa_XAAIncDJkZDNmYTRkZjY3YTg0YWM4OTYzMWYzYWIxNTE4ZTJlYnAyNDUwMTU";
-        const DB_KEY = "boutique_v2"; // Nayi key taake fresh start ho
+        const DB_KEY = "boutique_v2"; // Nayi Key for Fresh Start
 
         async function getProducts() {
             try {
@@ -138,16 +138,13 @@
                     <div>
                         <img src="${product.image}" id="mainDisplayImg" class="w-full rounded-3xl shadow-2xl mb-6 aspect-[3/4] object-cover border border-pink-50">
                         <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                            <img src="${product.image}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-20 h-28 md:w-24 md:h-32 object-cover rounded-xl cursor-pointer border-2 border-pink-300">
-                            ${product.image2 ? `<img src="${product.image2}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-20 h-28 md:w-24 md:h-32 object-cover rounded-xl cursor-pointer border hover:border-pink-400">` : ''}
-                            ${product.image3 ? `<img src="${product.image3}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-20 h-28 md:w-24 md:h-32 object-cover rounded-xl cursor-pointer border hover:border-pink-400">` : ''}
+                            <img src="${product.image}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-20 h-28 md:w-24 md:h-32 object-cover rounded-xl border-2 border-pink-300">
+                            ${product.image2 ? `<img src="${product.image2}" onclick="document.getElementById('mainDisplayImg').src=this.src" class="w-20 h-28 md:w-24 md:h-32 object-cover rounded-xl border hover:border-pink-400">` : ''}
                         </div>
                     </div>
                     <div class="flex flex-col justify-center">
-                        <span class="text-xs uppercase tracking-[0.3em] text-pink-300 mb-4 font-bold italic">${product.category || 'Luxury Selection'}</span>
                         <h1 class="text-4xl md:text-6xl font-luxury italic mb-6 text-gray-800">${product.name}</h1>
                         <p class="text-3xl mb-8 text-pink-600 font-bold">$${product.price}</p>
-                        <p class="text-gray-500 mb-10 italic font-light leading-relaxed">"${product.description || 'Modern silhouette.'}"</p>
                         <a href="${product.link}" target="_blank" class="btn-primary text-center py-5 rounded-full font-bold uppercase tracking-widest text-sm shadow-xl">Buy on Amazon</a>
                     </div>
                 </div>`;
@@ -170,4 +167,4 @@
         init();
     </script>
 </body>
-                    </html>
+</html>
