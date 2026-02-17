@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MODAURA | New York Luxury</title>
+    <title>MODAURA | Manhattan Luxury</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background: #ffffff; color: #000; -webkit-font-smoothing: antialiased; }
         .font-luxury { font-family: 'Bodoni Moda', serif; }
         .logo-main { font-family: 'Bodoni Moda', serif; font-style: italic; color: #AD1457; font-weight: 700; letter-spacing: -2px; }
-        
-        /* Premium Borders & Spacing */
-        .border-premium { border-color: #f3f4f6; }
         
         .new-arrival-tag { position: absolute; top: 15px; left: 15px; background: white; color: black; padding: 6px 14px; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; z-index: 10; border: 1px solid #eee; }
 
@@ -26,10 +23,9 @@
         
         .price-tag { font-family: 'Bodoni Moda', serif; font-style: italic; color: #C5A059; letter-spacing: -0.5px; font-weight: 500; }
 
-        /* Size Selection Refined */
         .size-chip { border: 1px solid #e5e5e5; padding: 12px 22px; font-size: 10px; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; color: #333; }
         .size-chip:hover { border-color: #000; color: #000; }
-        .size-chip.active { background: #000; color: #fff; border-color: #000; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .size-chip.active { background: #000; color: #fff; border-color: #000; font-weight: 700; }
 
         .btn-nyc { background: #000; color: #fff; padding: 22px; font-size: 11px; font-weight: 600; letter-spacing: 6px; text-transform: uppercase; width: 100%; display: block; text-align: center; transition: 0.5s; border: 1px solid #000; margin-top: 25px; }
         .btn-nyc:hover { background: transparent; color: #000; letter-spacing: 7px; }
@@ -37,19 +33,23 @@
         #adminPanel { background: #ffffff !important; z-index: 9999; position: fixed; inset: 0; overflow-y: auto; }
         .hidden { display: none; }
         
-        /* Decorative Lines */
+        /* Premium Lines */
         .line-accent { height: 1px; background: linear-gradient(to right, transparent, #eee, transparent); margin: 40px 0; }
+        
+        /* Delete Button Style */
+        .btn-delete { color: #ff4444; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; border: 1px solid #ff4444; padding: 4px 8px; transition: 0.3s; }
+        .btn-delete:hover { background: #ff4444; color: white; }
     </style>
 </head>
 <body>
 
-    <nav class="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-gray-100 z-[500] px-10 py-7 flex justify-between items-center">
-        <div onclick="goHome()" class="cursor-pointer group">
-            <h1 class="text-3xl logo-main transition-transform group-hover:scale-105">Modaura</h1>
+    <nav class="sticky top-0 bg-white/95 border-b border-gray-100 z-[500] px-10 py-7 flex justify-between items-center">
+        <div onclick="goHome()" class="cursor-pointer">
+            <h1 class="text-3xl logo-main">Modaura</h1>
             <p class="text-[7px] tracking-[0.8em] text-gray-400 font-bold uppercase mt-1">New York • Paris • London</p>
         </div>
         <div class="flex gap-12 items-center">
-            <button onclick="toggleAdmin()" class="text-[9px] tracking-[0.3em] text-gray-300 uppercase hover:text-black transition-all">Studio</button>
+            <button onclick="toggleAdmin()" class="text-[9px] tracking-[0.3em] text-gray-300 uppercase hover:text-black">Studio</button>
             <button onclick="goHome()" class="text-[11px] tracking-[0.3em] font-bold uppercase border-b border-black pb-1">Collection</button>
         </div>
     </nav>
@@ -57,7 +57,7 @@
     <main>
         <div id="homeView">
             <header class="text-center py-32 px-6">
-                <div class="text-[10px] tracking-[0.8em] text-[#AD1457] font-bold uppercase mb-6 opacity-80">Spring Summer 2026</div>
+                <div class="text-[10px] tracking-[0.8em] text-[#AD1457] font-bold uppercase mb-6">Spring Summer 2026</div>
                 <h2 class="text-7xl md:text-9xl font-luxury italic mb-10 tracking-tighter leading-tight">Vibrant Elegance</h2>
                 <div class="w-20 h-[1px] bg-black mx-auto mb-10"></div>
                 <p class="text-[11px] tracking-[0.5em] text-gray-400 uppercase italic">Curating the Manhattan Aesthetic.</p>
@@ -90,10 +90,9 @@
                         <ul id="detailBullets" class="text-[15px] text-gray-500 space-y-5 font-light italic leading-relaxed"></ul>
                     </div>
                     <a id="detailLink" href="#" target="_blank" class="btn-nyc shadow-lg">Acquire on Amazon</a>
-                    <button onclick="goHome()" class="mt-14 text-[9px] text-gray-400 uppercase tracking-[0.4em] hover:text-black transition-all">← Back to Collection</button>
+                    <button onclick="goHome()" class="mt-14 text-[9px] text-gray-400 uppercase tracking-[0.4em] hover:text-black">← Back to Collection</button>
                 </div>
             </div>
-
             <div id="suggestionSection" class="border-t border-gray-100 pt-24">
                 <h4 class="font-luxury text-4xl italic mb-16 text-center">Complete the Look</h4>
                 <div id="suggestionGrid" class="grid grid-cols-2 md:grid-cols-4 gap-12"></div>
@@ -101,21 +100,20 @@
         </div>
 
         <div id="adminPanel" class="hidden p-10">
-            <div class="max-w-2xl mx-auto bg-white p-16 border border-gray-100 shadow-2xl mt-12">
-                <h3 class="font-luxury text-4xl italic mb-12 border-b border-gray-50 pb-8 text-[#AD1457]">Studio Inventory</h3>
+            <div class="max-w-2xl mx-auto bg-white p-16 border shadow-2xl mt-12">
+                <h3 class="font-luxury text-4xl italic mb-12 border-b pb-8 text-[#AD1457]">Studio Inventory</h3>
+                <div id="inventoryList" class="mb-12 space-y-4 max-h-60 overflow-y-auto border-b pb-8"></div>
                 <div class="grid gap-8">
-                    <input type="text" id="dressName" placeholder="Piece Title" class="border-b border-gray-200 p-4 outline-none text-sm tracking-widest">
-                    <input type="number" id="dressPrice" placeholder="Price (USD)" class="border-b border-gray-200 p-4 outline-none text-sm tracking-widest">
-                    <input type="text" id="dressCategory" placeholder="Category (e.g. EVENING)" class="border-b border-gray-200 p-4 outline-none text-sm tracking-widest uppercase">
-                    <input type="text" id="amazonLink" placeholder="Amazon Link" class="border-b border-gray-200 p-4 outline-none text-sm">
-                    <div class="grid grid-cols-3 gap-4">
-                        <input type="text" id="img1" placeholder="Image 1 (Main)" class="border border-gray-100 p-3 outline-none text-[10px]">
-                        <input type="text" id="img2" placeholder="Image 2" class="border border-gray-100 p-3 outline-none text-[10px]">
-                        <input type="text" id="img3" placeholder="Image 3" class="border border-gray-100 p-3 outline-none text-[10px]">
-                    </div>
-                    <textarea id="dressDesc" placeholder="Features (Comma separated points)" class="border border-gray-100 p-5 h-32 outline-none text-sm italic leading-relaxed"></textarea>
+                    <input type="text" id="dressName" placeholder="Piece Title" class="border-b p-4 outline-none text-sm tracking-widest">
+                    <input type="number" id="dressPrice" placeholder="Price (USD)" class="border-b p-4 outline-none text-sm tracking-widest">
+                    <input type="text" id="dressCategory" placeholder="Category" class="border-b p-4 outline-none text-sm uppercase">
+                    <input type="text" id="amazonLink" placeholder="Amazon Link" class="border-b p-4 outline-none text-sm">
+                    <input type="text" id="img1" placeholder="Main Image URL" class="border-b p-4 outline-none text-[10px]">
+                    <input type="text" id="img2" placeholder="Second Image URL" class="border-b p-4 outline-none text-[10px]">
+                    <input type="text" id="img3" placeholder="Third Image URL" class="border-b p-4 outline-none text-[10px]">
+                    <textarea id="dressDesc" placeholder="Features (Comma separated)" class="border p-5 h-32 outline-none text-sm italic"></textarea>
                     <button onclick="saveDress()" id="saveBtn" class="btn-nyc">Publish Piece</button>
-                    <button onclick="document.getElementById('adminPanel').classList.add('hidden')" class="text-[10px] uppercase tracking-[0.5em] mt-6 text-gray-300 hover:text-black transition-all">Close Studio</button>
+                    <button onclick="document.getElementById('adminPanel').classList.add('hidden')" class="text-[10px] uppercase tracking-[0.5em] mt-6 text-gray-300">Close Studio</button>
                 </div>
             </div>
         </div>
@@ -129,20 +127,18 @@
             </div>
             <div class="flex flex-col gap-6">
                 <p class="text-[10px] tracking-[0.5em] text-white uppercase font-bold mb-2">Navigation</p>
-                <a href="#" class="text-[11px] text-gray-400 hover:text-white transition tracking-widest">COLLECTIONS</a>
-                <a href="#" class="text-[11px] text-gray-400 hover:text-white transition tracking-widest">OUR STORY</a>
-                <a href="#" class="text-[11px] text-gray-400 hover:text-white transition tracking-widest">INSTAGRAM</a>
+                <a href="#" class="text-[11px] text-gray-400 uppercase tracking-widest">Collections</a>
+                <a href="#" class="text-[11px] text-gray-400 uppercase tracking-widest">Our Story</a>
             </div>
             <div>
                 <p class="text-[10px] tracking-[0.5em] text-white uppercase font-bold mb-8">House Newsletter</p>
                 <div class="flex border-b border-gray-800 pb-2">
-                    <input type="text" placeholder="EMAIL ADDRESS" class="bg-transparent w-full text-[10px] outline-none tracking-widest">
-                    <button class="text-[10px] tracking-widest">JOIN</button>
+                    <input type="text" placeholder="EMAIL ADDRESS" class="bg-transparent w-full text-[10px] outline-none">
+                    <button class="text-[10px]">JOIN</button>
                 </div>
             </div>
         </div>
-        <div class="line-accent opacity-20"></div>
-        <p class="text-center text-[8px] tracking-[0.6em] text-gray-600 uppercase">© 2026 Modaura House • New York City</p>
+        <p class="text-center text-[8px] tracking-[0.6em] text-gray-600 mt-20 uppercase">© 2026 Modaura House • New York City</p>
     </footer>
 
     <script>
@@ -174,7 +170,25 @@
             window.location.reload();
         }
 
-        function toggleAdmin() { if (prompt("Security Key:") === "rafay1259") document.getElementById('adminPanel').classList.remove('hidden'); }
+        async function deleteDress(id) {
+            if(confirm("Are you sure you want to remove this piece?")) {
+                await fetch('/api/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({id}) });
+                window.location.reload();
+            }
+        }
+
+        function toggleAdmin() { 
+            if (prompt("Security Key:") === "rafay1259") {
+                document.getElementById('adminPanel').classList.remove('hidden');
+                document.getElementById('inventoryList').innerHTML = allProducts.map(p => `
+                    <div class="flex justify-between items-center border-b border-gray-50 py-2">
+                        <span class="text-[10px] uppercase tracking-widest">${p.name}</span>
+                        <button onclick="deleteDress(${p.id})" class="btn-delete">Remove</button>
+                    </div>
+                `).join('');
+            }
+        }
+
         function selectSize(el) { document.querySelectorAll('.size-chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); }
 
         async function init() {
@@ -187,9 +201,7 @@
             document.getElementById('productGrid').innerHTML = products.map(item => `
                 <div class="product-card cursor-pointer relative group" onclick='updateUrlAndShow(${item.id})'>
                     <div class="new-arrival-tag">New Arrival</div>
-                    <div class="img-container mb-8 shadow-sm group-hover:shadow-xl transition-all duration-700">
-                        <img src="${item.images[0]}" loading="lazy">
-                    </div>
+                    <div class="img-container mb-8"><img src="${item.images[0]}" loading="lazy"></div>
                     <div class="text-center px-4">
                         <p class="text-[9px] tracking-[0.5em] text-[#AD1457] font-bold uppercase mb-4">${item.category}</p>
                         <h3 class="text-[13px] font-semibold tracking-[0.2em] text-gray-900 mb-2 uppercase">${item.name}</h3>
@@ -210,7 +222,11 @@
             document.getElementById('detailCat').innerText = p.category;
             document.getElementById('detailLink').href = p.link;
             document.getElementById('detailBullets').innerHTML = (p.desc || "").split(',').map(b => `<li>— ${b.trim()}</li>`).join('');
-            document.getElementById('thumbContainer').innerHTML = p.images.map(img => `<img src="${img}" onclick="document.getElementById('mainDetailImg').src=this.src" class="w-16 border border-gray-100 cursor-pointer hover:border-black aspect-[3/4] object-cover transition-all shadow-sm">`).join('');
+            
+            // Fixed Thumbnail Logic
+            document.getElementById('thumbContainer').innerHTML = p.images.filter(img => img.trim() !== "").map(img => `
+                <img src="${img}" onclick="document.getElementById('mainDetailImg').src=this.src" class="w-16 border border-gray-100 cursor-pointer hover:border-black aspect-[3/4] object-cover transition-all shadow-sm">
+            `).join('');
             
             const suggestions = allProducts.filter(item => item.category === p.category && item.id !== p.id).slice(0, 4);
             const sugGrid = document.getElementById('suggestionGrid');
@@ -218,7 +234,7 @@
                 document.getElementById('suggestionSection').classList.remove('hidden');
                 sugGrid.innerHTML = suggestions.map(s => `
                     <div class="cursor-pointer group" onclick='updateUrlAndShow(${s.id})'>
-                        <div class="aspect-[3/4] overflow-hidden mb-6 bg-gray-50 border border-gray-100 shadow-sm"><img src="${s.images[0]}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000"></div>
+                        <div class="aspect-[3/4] overflow-hidden mb-6 bg-gray-50 border border-gray-100"><img src="${s.images[0]}" class="w-full h-full object-cover"></div>
                         <p class="text-[10px] font-bold uppercase mb-2 tracking-[0.2em] text-center">${s.name}</p>
                         <p class="price-tag text-lg text-center">$${s.price}</p>
                     </div>
@@ -233,4 +249,4 @@
         init();
     </script>
 </body>
-                </html>
+                                                          </html>
