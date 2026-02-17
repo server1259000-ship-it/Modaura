@@ -11,6 +11,9 @@
         .font-luxury { font-family: 'Bodoni Moda', serif; }
         .logo-main { font-family: 'Bodoni Moda', serif; font-style: italic; color: #AD1457; font-weight: 700; letter-spacing: -2px; }
         
+        /* New Arrival Badge */
+        .new-arrival-tag { position: absolute; top: 15px; left: 15px; background: white; color: black; padding: 5px 12px; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; z-index: 10; border: 0.5px solid #eee; }
+
         .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px 30px; padding: 40px; max-width: 1400px; margin: 0 auto; }
         @media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 640px) { .product-grid { grid-template-columns: 1fr; padding: 20px; } }
@@ -19,7 +22,7 @@
         .img-container img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
         .product-card:hover img { transform: scale(1.06); }
         
-        .price-tag { font-family: 'Bodoni Moda', serif; font-style: italic; color: #C5A059; letter-spacing: -0.5px; }
+        .price-tag { font-family: 'Bodoni Moda', serif; font-style: italic; color: #C5A059; letter-spacing: -1px; font-weight: 500; }
 
         .size-chip { border: 1px solid #e5e5e5; padding: 12px 20px; font-size: 11px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         .size-chip:hover { border-color: #000; }
@@ -28,7 +31,7 @@
         .btn-nyc { background: #000; color: #fff; padding: 20px; font-size: 10px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; width: 100%; display: block; text-align: center; transition: 0.4s; border: 1px solid #000; margin-top: 20px; }
         .btn-nyc:hover { background: transparent; color: #000; }
 
-        .footer-soft { background: #1a1a1a; color: #999; padding: 80px 40px; }
+        .footer-soft { background: #000; color: #999; padding: 80px 40px; }
         #adminPanel { background: #ffffff !important; z-index: 9999; position: fixed; inset: 0; overflow-y: auto; }
         .hidden { display: none; }
     </style>
@@ -61,20 +64,20 @@
                 <div class="w-full lg:w-3/5 flex gap-6">
                     <div id="thumbContainer" class="flex flex-col gap-4"></div>
                     <div class="flex-1 img-container">
-                        <img id="mainDetailImg" src="" class="w-full h-full object-cover shadow-sm">
+                        <img id="mainDetailImg" src="" class="w-full h-full object-cover">
                     </div>
                 </div>
                 <div class="w-full lg:w-2/5 flex flex-col justify-center">
                     <p id="detailCat" class="text-[#AD1457] text-[10px] font-bold tracking-[0.5em] uppercase mb-4"></p>
                     <h2 id="detailTitle" class="text-5xl font-luxury italic mb-6 leading-tight"></h2>
-                    <p id="detailPrice" class="price-tag mb-10 text-4xl"></p>
+                    <p id="detailPrice" class="price-tag mb-10 text-5xl"></p>
                     
                     <div class="mb-10">
                         <p class="text-[9px] uppercase tracking-widest text-gray-400 mb-4 font-bold">Select Size</p>
                         <div class="flex gap-3">
-                            <div class="size-chip" onclick="selectSize(this)">S</div>
+                            <div class="size-chip active" onclick="selectSize(this)">S</div>
                             <div class="size-chip" onclick="selectSize(this)">M</div>
-                            <div class="size-chip active" onclick="selectSize(this)">L</div>
+                            <div class="size-chip" onclick="selectSize(this)">L</div>
                             <div class="size-chip" onclick="selectSize(this)">XL</div>
                         </div>
                     </div>
@@ -83,10 +86,10 @@
                         <ul id="detailBullets" class="text-[15px] text-gray-500 space-y-4 font-light"></ul>
                     </div>
                     <a id="detailLink" href="#" target="_blank" class="btn-nyc">Acquire on Amazon</a>
-                    <button onclick="goHome()" class="mt-12 text-[9px] text-gray-300 uppercase tracking-widest hover:text-black">← Back</button>
+                    <button onclick="goHome()" class="mt-12 text-[9px] text-gray-300 uppercase tracking-widest hover:text-black">← Back to Collection</button>
                 </div>
             </div>
-            
+
             <div id="suggestionSection" class="border-t border-gray-50 pt-20">
                 <h4 class="font-luxury text-3xl italic mb-12">Complete the Look</h4>
                 <div id="suggestionGrid" class="grid grid-cols-2 md:grid-cols-4 gap-8"></div>
@@ -95,7 +98,7 @@
 
         <div id="adminPanel" class="hidden p-10">
             <div class="max-w-xl mx-auto bg-white p-12 border shadow-2xl mt-10">
-                <h3 class="font-luxury text-3xl italic mb-10 border-b pb-6">Studio Inventory</h3>
+                <h3 class="font-luxury text-3xl italic mb-10 border-b pb-6 text-[#AD1457]">Studio Inventory</h3>
                 <div class="grid gap-6">
                     <input type="text" id="dressName" placeholder="Piece Title" class="border-b p-3 outline-none text-sm">
                     <input type="number" id="dressPrice" placeholder="Price (USD)" class="border-b p-3 outline-none text-sm">
@@ -105,8 +108,8 @@
                     <input type="text" id="img2" placeholder="Second Image URL" class="border-b p-3 outline-none text-[10px]">
                     <input type="text" id="img3" placeholder="Third Image URL" class="border-b p-3 outline-none text-[10px]">
                     <textarea id="dressDesc" placeholder="Features (Point 1, Point 2...)" class="border p-4 h-24 outline-none text-sm italic"></textarea>
-                    <button onclick="saveDress()" id="saveBtn" class="btn-nyc">Publish</button>
-                    <button onclick="document.getElementById('adminPanel').classList.add('hidden')" class="text-xs uppercase tracking-widest mt-4">Close</button>
+                    <button onclick="saveDress()" id="saveBtn" class="btn-nyc">Publish to Store</button>
+                    <button onclick="document.getElementById('adminPanel').classList.add('hidden')" class="text-xs uppercase tracking-widest mt-4">Close Studio</button>
                 </div>
             </div>
         </div>
@@ -119,7 +122,7 @@
                 <p class="text-xs leading-loose tracking-widest uppercase text-gray-500">The heart of Manhattan fashion.</p>
             </div>
             <div class="flex flex-col gap-4">
-                <p class="text-[9px] tracking-widest text-white uppercase mb-2">Social</p>
+                <p class="text-[9px] tracking-widest text-white uppercase mb-2">Connect</p>
                 <a href="#" class="text-[10px] hover:text-white uppercase tracking-widest transition">Instagram</a>
                 <a href="#" class="text-[10px] hover:text-white uppercase tracking-widest transition">Pinterest</a>
             </div>
@@ -128,7 +131,7 @@
                 <input type="text" placeholder="ENTER EMAIL" class="bg-transparent border-b border-gray-700 p-2 w-full text-[10px] focus:border-white outline-none">
             </div>
         </div>
-        <p class="text-center text-[8px] tracking-[0.5em] text-gray-700 uppercase mt-24">© 2026 Modaura House</p>
+        <p class="text-center text-[8px] tracking-[0.5em] text-gray-800 uppercase mt-24">© 2026 Modaura New York House</p>
     </footer>
 
     <script>
@@ -141,7 +144,7 @@
                 const list = Array.isArray(data) ? data : (data.result || []);
                 return list.map(i => {
                     let p = typeof i === 'string' ? JSON.parse(i) : i;
-                    // Repairs legacy 'image' field if it exists
+                    // Fix for image/images field consistency
                     if (!p.images && p.image) p.images = [p.image];
                     return p;
                 }).filter(i => i && i.name);
@@ -178,7 +181,8 @@
 
         function renderGrid(products) {
             document.getElementById('productGrid').innerHTML = products.map(item => `
-                <div class="product-card cursor-pointer" onclick='updateUrlAndShow(${item.id})'>
+                <div class="product-card cursor-pointer relative" onclick='updateUrlAndShow(${item.id})'>
+                    <div class="new-arrival-tag">New Arrival</div>
                     <div class="img-container mb-8"><img src="${item.images ? item.images[0] : ''}" loading="lazy"></div>
                     <div class="text-center px-2">
                         <p class="text-[9px] tracking-[0.4em] text-[#AD1457] font-bold uppercase mb-3">${item.category}</p>
@@ -200,8 +204,9 @@
             document.getElementById('detailCat').innerText = p.category;
             document.getElementById('detailLink').href = p.link;
             document.getElementById('detailBullets').innerHTML = (p.desc || "").split(',').map(b => `<li>— ${b.trim()}</li>`).join('');
-            document.getElementById('thumbContainer').innerHTML = (p.images || []).map(img => `<img src="${img}" onclick="document.getElementById('mainDetailImg').src=this.src" class="w-16 border border-gray-100 cursor-pointer hover:border-black aspect-[3/4] object-cover transition shadow-sm">`).join('');
+            document.getElementById('thumbContainer').innerHTML = (p.images || []).map(img => `<img src="${img}" onclick="document.getElementById('mainDetailImg').src=this.src" class="w-16 border border-gray-100 cursor-pointer hover:border-black aspect-[3/4] object-cover shadow-sm transition">`).join('');
             
+            // Suggestion Logic (Same Category)
             const suggestions = allProducts.filter(item => item.category === p.category && item.id !== p.id).slice(0, 4);
             const sugGrid = document.getElementById('suggestionGrid');
             if(suggestions.length > 0) {
@@ -219,8 +224,14 @@
             document.getElementById('detailView').classList.remove('hidden');
         }
 
-        function goHome() { window.history.pushState({}, '', window.location.pathname); document.getElementById('homeView').classList.remove('hidden'); document.getElementById('detailView').classList.add('hidden'); renderGrid(allProducts); }
+        function goHome() { 
+            window.history.pushState({}, '', window.location.pathname); 
+            document.getElementById('homeView').classList.remove('hidden'); 
+            document.getElementById('detailView').classList.add('hidden'); 
+            renderGrid(allProducts); 
+        }
+        
         init();
     </script>
 </body>
-    </html>
+                            </html>
