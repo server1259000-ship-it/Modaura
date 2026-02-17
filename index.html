@@ -11,35 +11,32 @@
         .font-luxury { font-family: 'Bodoni Moda', serif; }
         .logo-main { font-family: 'Bodoni Moda', serif; font-style: italic; color: #AD1457; font-weight: 700; letter-spacing: -1.5px; }
         
-        /* NYC Minimalist Hero */
         .hero-section { text-align: center; padding: 140px 24px 100px; }
         .hero-title { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: clamp(3rem, 10vw, 5.5rem); line-height: 1; letter-spacing: -2px; }
 
-        /* Auto-Optimization Grid */
         .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 40px; max-width: 1500px; margin: 0 auto; }
         @media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 640px) { .product-grid { grid-template-columns: 1fr; padding: 24px; } }
 
-        /* Image Optimization Engine */
         .img-container { 
             aspect-ratio: 3/4; 
             overflow: hidden; 
             background: #fcfcfc; 
             position: relative;
-            box-shadow: 0 10px 30px -15px rgba(0,0,0,0.1); /* Subtle Depth */
+            box-shadow: 0 10px 30px -15px rgba(0,0,0,0.1); 
         }
         .img-container img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; /* Auto-Fix Ratio */
-            image-rendering: -webkit-optimize-contrast; /* Sharpness */
+            width: 100%; height: 100%; 
+            object-fit: cover; /* Auto-Fixes Ratio to 3:4 */
+            image-rendering: -webkit-optimize-contrast; 
             transition: transform 1.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
         .product-card:hover img { transform: scale(1.03); }
 
-        .btn-nyc { background: #000; color: #fff; padding: 22px; font-size: 11px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; width: 100%; display: block; text-align: center; transition: 0.4s; }
+        .btn-nyc { background: #000; color: #fff; padding: 22px; font-size: 11px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; width: 100%; display: block; text-align: center; transition: 0.4s; border: none; cursor: pointer; }
         .btn-nyc:hover { background: #AD1457; transform: translateY(-2px); box-shadow: 0 15px 30px rgba(173, 20, 87, 0.15); }
 
+        /* Fix: Solid background for Admin to prevent bleed through */
         #adminPanel { background: #ffffff !important; z-index: 9999; position: fixed; inset: 0; overflow-y: auto; }
         .hidden { display: none; }
     </style>
@@ -83,6 +80,7 @@
                         <ul id="detailBullets" class="text-[16px] text-gray-500 space-y-5 italic leading-relaxed"></ul>
                     </div>
                     <a id="detailLink" href="#" target="_blank" class="btn-nyc">Acquire via Amazon</a>
+                    <button onclick="goHome()" class="mt-12 text-[10px] text-gray-400 uppercase tracking-widest hover:text-black">← Return to Collection</button>
                 </div>
             </div>
         </div>
@@ -119,9 +117,21 @@
 
     <script>
         let allProducts = [];
+
+        // Fix: Handles Upstash List format specifically
         async function fetchProducts() {
-            try { const res = await fetch('/api/get-dresses'); return await res.json() || []; } catch (e) { return []; }
+            try { 
+                const res = await fetch('/api/get-dresses'); 
+                const data = await res.json();
+                // Check if data is wrapped in .result or is direct array
+                let list = Array.isArray(data) ? data : (data.result || []);
+                return list;
+            } catch (e) { 
+                console.error("Fetch failed", e);
+                return []; 
+            }
         }
+
         async function saveDress() {
             const btn = document.getElementById('saveBtn'); btn.innerText = "PUBLISHING...";
             const data = {
@@ -136,16 +146,22 @@
             await fetch('/api/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
             window.location.reload();
         }
+
         function toggleAdmin() { if (prompt("Key:") === "rafay1259") document.getElementById('adminPanel').classList.remove('hidden'); }
         function swapImg(src) { document.getElementById('mainDetailImg').src = src; }
+
         async function init() {
             allProducts = await fetchProducts();
             const id = new URLSearchParams(window.location.search).get('id');
             if (id) showDetails(id); else renderGrid(allProducts);
         }
+
         function renderGrid(products) {
             const grid = document.getElementById('productGrid');
-            if (!products.length) { grid.innerHTML = `<p class="col-span-full text-center py-40 text-gray-300 uppercase text-[10px] tracking-widest italic">Collection is coming soon...</p>`; return; }
+            if (!products || products.length === 0) { 
+                grid.innerHTML = `<p class="col-span-full text-center py-40 text-gray-300 uppercase text-[10px] tracking-widest italic">Collection is currently being curated in Manhattan...</p>`; 
+                return; 
+            }
             grid.innerHTML = products.map(item => `
                 <div class="product-card" onclick='updateUrlAndShow(${item.id})'>
                     <div class="img-container mb-10"><img src="${item.images[0]}" loading="lazy"></div>
@@ -157,7 +173,9 @@
                 </div>
             `).join('');
         }
+
         function updateUrlAndShow(id) { window.history.pushState({}, '', `?id=${id}`); showDetails(id); }
+
         function showDetails(id) {
             const p = allProducts.find(item => item.id == id); if(!p) return;
             document.getElementById('mainDetailImg').src = p.images[0];
@@ -171,8 +189,9 @@
             document.getElementById('detailView').classList.remove('hidden');
             window.scrollTo(0,0);
         }
+
         function goHome() { window.history.pushState({}, '', window.location.pathname); document.getElementById('homeView').classList.remove('hidden'); document.getElementById('detailView').classList.add('hidden'); renderGrid(allProducts); }
         init();
     </script>
 </body>
-                        </html>
+    </html>
